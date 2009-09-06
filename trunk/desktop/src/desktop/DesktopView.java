@@ -22,6 +22,7 @@ import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import org.apache.commons.lang.time.DateUtils;
 
 /**
  * The application's main frame.
@@ -119,6 +120,9 @@ public class DesktopView extends FrameView {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
@@ -175,6 +179,21 @@ public class DesktopView extends FrameView {
         jMenu1.add(jMenuItem3);
 
         menuBar.add(jMenu1);
+
+        jMenu2.setText(resourceMap.getString("jMenu2.text")); // NOI18N
+        jMenu2.setName("jMenu2"); // NOI18N
+
+        jMenuItem4.setAction(actionMap.get("showCodeTypeWindow")); // NOI18N
+        jMenuItem4.setText(resourceMap.getString("jMenuItem4.text")); // NOI18N
+        jMenuItem4.setName("jMenuItem4"); // NOI18N
+        jMenu2.add(jMenuItem4);
+
+        jMenuItem5.setAction(actionMap.get("showSystemCodeWindow")); // NOI18N
+        jMenuItem5.setText(resourceMap.getString("jMenuItem5.text")); // NOI18N
+        jMenuItem5.setName("jMenuItem5"); // NOI18N
+        jMenu2.add(jMenuItem5);
+
+        menuBar.add(jMenu2);
 
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
@@ -288,18 +307,34 @@ public class DesktopView extends FrameView {
             // the Swing GUI from here.
             Query query = entityManager.createQuery("select s from Stock s order by s.symbol");
             List<Stock> stocks = query.getResultList();
-            
-            for(Stock s:stocks){
-                setMessage("Starting update price ... "+s.getName());
+            List<Stock> webStocks = MarketReader.fetchStockList("^STI");
+
+            for(Stock s:webStocks){
+                if(!stocks.contains(s)){
+                    s.setCreateDate(new Date());
+                    s.setUpdateDate(new Date());
+                    setMessage("Add stock "+s.getName());
+                    entityManager.getTransaction().begin();
+                    entityManager.persist(s);
+                    entityManager.getTransaction().commit();
+                }
+                setMessage("Update price "+s.getName());
+                Query q = entityManager.createQuery("select max(p.pricePK.priceDate) from Price p where p.pricePK.stock='"+s.getSymbol()+"'");
+                Object o = q.getSingleResult();
+                System.out.println(o);
+                Date lastDate = null;
+                if(o!=null){
+                    lastDate = DateUtils.addDays((Date)o, 1);
+                }
                 entityManager.getTransaction().begin();
-                List<Price> prices = MarketReader.fetchStockPrice(s.getSymbol());
+                List<Price> prices = MarketReader.fetchStockPrice(s.getSymbol(),lastDate);
                 for(Price p:prices){
                     p.setCreateDate(new Date());
                     p.setUpdateDate(new Date());
                     entityManager.persist(p);
                 }
                 entityManager.getTransaction().commit();
-                setProgress(stocks.indexOf(s)+1, 0, stocks.size());
+                setProgress(webStocks.indexOf(s)+1, 0, webStocks.size());
             }           
             return null;  // return your result
         }
@@ -310,13 +345,32 @@ public class DesktopView extends FrameView {
         }
     }
 
+    @Action
+    public void showCodeTypeWindow() {
+        if (codeTypeWindow == null) {
+            codeTypeWindow = new CodeTypeWindow();
+        }
+        showWindow(codeTypeWindow);
+    }
+
+    @Action
+    public void showSystemCodeWindow() {
+        if(systemCodeWindow==null){
+            systemCodeWindow = new SystemCodeWindow();
+        }
+        showWindow(systemCodeWindow);
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JProgressBar progressBar;
@@ -332,4 +386,6 @@ public class DesktopView extends FrameView {
     private JDialog aboutBox;
     private StockWindow stockWindow;
     private PriceWindow priceWindow;
+    private CodeTypeWindow codeTypeWindow;
+    private SystemCodeWindow systemCodeWindow;
 }

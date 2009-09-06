@@ -51,25 +51,13 @@ public class MarketReader {
     }
 
     public static List<Price> fetchStockPrice(String symbol,
-            String dateFrom) {
+            Date dateFrom) {
         return fetchStockPrice(symbol, dateFrom, null);
-    }
-
-    public static List<Price> fetchStockPrice(String symbol,
-            String from, String to) {
-        return fetchStockPrice(symbol, from, to, Frequency.DATE);
     }
 
     public static List<Price> fetchStockPrice(String symbol,
             Date from, Date to) {
         return fetchStockPrice(symbol, from, to, Frequency.DATE);
-    }
-
-    public static List<Price> fetchStockPrice(String symbol,
-            String dateFrom, String dateTo, Frequency freq) {
-        Date from = dateFrom == null ? null : CommonUtils.getDate(dateFrom);
-        Date to = dateTo == null ? null : CommonUtils.getDate(dateTo);
-        return fetchStockPrice(symbol, from, to, freq);
     }
 
     public static List<Price> fetchStockPrice(String symbol,
