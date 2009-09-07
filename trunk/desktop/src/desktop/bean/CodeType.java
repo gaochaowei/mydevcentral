@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package desktop.bean;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -16,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -25,15 +27,17 @@ import javax.persistence.Table;
 @Table(name = "CODE_TYPE")
 @NamedQueries({@NamedQuery(name = "CodeType.findAll", query = "SELECT c FROM CodeType c"), @NamedQuery(name = "CodeType.findById", query = "SELECT c FROM CodeType c WHERE c.id = :id"), @NamedQuery(name = "CodeType.findByText", query = "SELECT c FROM CodeType c WHERE c.text = :text")})
 public class CodeType implements Serializable {
+
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    @Basic(optional = false)
     @Column(name = "TEXT")
     private String text;
-        @OneToMany(mappedBy = "codeType")
+    @OneToMany(mappedBy = "codeType")
     private List<SystemCode> systemCodeList;
 
     public CodeType() {
@@ -53,7 +57,9 @@ public class CodeType implements Serializable {
     }
 
     public void setId(Integer id) {
+        Integer oldId = this.id;
         this.id = id;
+        changeSupport.firePropertyChange("id", oldId, id);
     }
 
     public String getText() {
@@ -61,7 +67,9 @@ public class CodeType implements Serializable {
     }
 
     public void setText(String text) {
+        String oldText = this.text;
         this.text = text;
+        changeSupport.firePropertyChange("text", oldText, text);
     }
 
     public List<SystemCode> getSystemCodeList() {
@@ -97,4 +105,11 @@ public class CodeType implements Serializable {
         return "desktop.bean.CodeType[id=" + id + "]";
     }
 
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
+    }
 }
