@@ -117,6 +117,8 @@ public class DesktopView extends FrameView {
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
@@ -161,6 +163,16 @@ public class DesktopView extends FrameView {
         fileMenu.add(exitMenuItem);
 
         menuBar.add(fileMenu);
+
+        jMenu4.setText(resourceMap.getString("jMenu4.text")); // NOI18N
+        jMenu4.setName("jMenu4"); // NOI18N
+
+        jMenuItem4.setAction(actionMap.get("showAccountWindow")); // NOI18N
+        jMenuItem4.setText(resourceMap.getString("jMenuItem4.text")); // NOI18N
+        jMenuItem4.setName("jMenuItem4"); // NOI18N
+        jMenu4.add(jMenuItem4);
+
+        menuBar.add(jMenu4);
 
         jMenu3.setText(resourceMap.getString("jMenu3.text")); // NOI18N
         jMenu3.setName("jMenu3"); // NOI18N
@@ -394,15 +406,22 @@ public class DesktopView extends FrameView {
         }
         showWindow(priceChartWindow);
     }
+
+    @Action
+    public void showAccountWindow() {
+        showPanel(new AccountPanel());
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel mainPanel;
