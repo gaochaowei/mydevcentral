@@ -23,6 +23,8 @@ public class SystemCodePK implements Serializable {
     @Column(name = "CODE_TYPE")
     private int codeType;
 
+    public SystemCodePK(){
+    }
     public SystemCodePK(int codeId, int codeType) {
         this.codeId = codeId;
         this.codeType = codeType;

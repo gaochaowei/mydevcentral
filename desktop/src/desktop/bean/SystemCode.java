@@ -5,6 +5,8 @@
 
 package desktop.bean;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -14,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -23,6 +26,8 @@ import javax.persistence.Table;
 @Table(name = "SYSTEM_CODE")
 @NamedQueries({@NamedQuery(name = "SystemCode.findAll", query = "SELECT s FROM SystemCode s"), @NamedQuery(name = "SystemCode.findByCodeId", query = "SELECT s FROM SystemCode s WHERE s.systemCodePK.codeId = :codeId"), @NamedQuery(name = "SystemCode.findByCodeType", query = "SELECT s FROM SystemCode s WHERE s.systemCodePK.codeType = :codeType"), @NamedQuery(name = "SystemCode.findByText", query = "SELECT s FROM SystemCode s WHERE s.text = :text")})
 public class SystemCode implements Serializable {
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected SystemCodePK systemCodePK;
@@ -57,7 +62,9 @@ public class SystemCode implements Serializable {
     }
 
     public void setText(String text) {
+        String oldText = this.text;
         this.text = text;
+        changeSupport.firePropertyChange("text", oldText, text);
     }
 
     public CodeType getCodeType() {
@@ -65,7 +72,9 @@ public class SystemCode implements Serializable {
     }
 
     public void setCodeType(CodeType codeType) {
+        CodeType oldCodeType = this.codeType;
         this.codeType = codeType;
+        changeSupport.firePropertyChange("codeType", oldCodeType, codeType);
     }
 
     @Override
@@ -91,6 +100,14 @@ public class SystemCode implements Serializable {
     @Override
     public String toString() {
         return "desktop.bean.SystemCode[systemCodePK=" + systemCodePK + "]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
 
 }

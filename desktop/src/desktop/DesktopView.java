@@ -22,6 +22,7 @@ import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
 import org.apache.commons.lang.time.DateUtils;
 
 /**
@@ -116,12 +117,13 @@ public class DesktopView extends FrameView {
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
@@ -160,6 +162,16 @@ public class DesktopView extends FrameView {
 
         menuBar.add(fileMenu);
 
+        jMenu3.setText(resourceMap.getString("jMenu3.text")); // NOI18N
+        jMenu3.setName("jMenu3"); // NOI18N
+
+        jMenuItem6.setAction(actionMap.get("showStockPriceChart")); // NOI18N
+        jMenuItem6.setText(resourceMap.getString("jMenuItem6.text")); // NOI18N
+        jMenuItem6.setName("jMenuItem6"); // NOI18N
+        jMenu3.add(jMenuItem6);
+
+        menuBar.add(jMenu3);
+
         jMenu1.setText(resourceMap.getString("jMenu1.text")); // NOI18N
         jMenu1.setName("jMenu1"); // NOI18N
 
@@ -180,13 +192,9 @@ public class DesktopView extends FrameView {
 
         menuBar.add(jMenu1);
 
+        jMenu2.setAction(actionMap.get("showSystemCodeWindow")); // NOI18N
         jMenu2.setText(resourceMap.getString("jMenu2.text")); // NOI18N
         jMenu2.setName("jMenu2"); // NOI18N
-
-        jMenuItem4.setAction(actionMap.get("showCodeTypeWindow")); // NOI18N
-        jMenuItem4.setText(resourceMap.getString("jMenuItem4.text")); // NOI18N
-        jMenuItem4.setName("jMenuItem4"); // NOI18N
-        jMenu2.add(jMenuItem4);
 
         jMenuItem5.setAction(actionMap.get("showSystemCodeWindow")); // NOI18N
         jMenuItem5.setText(resourceMap.getString("jMenuItem5.text")); // NOI18N
@@ -263,27 +271,48 @@ public class DesktopView extends FrameView {
         }
     }
 
+    private void showPanel(JPanel panel) {
+        JInternalFrame window = new JInternalFrame();
+        window.setContentPane(panel);
+        window.setResizable(true);
+        window.setClosable(true);
+        window.setMaximizable(true);
+        window.setIconifiable(true);
+        window.setVisible(true);
+        window.pack();
+        jDesktopPane1.add(window);
+        try {
+            window.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+        }
+    }
+
     @Action
     public Task showPriceWindow() {
         return new ShowPriceWindowTask(getApplication());
     }
 
     private class ShowPriceWindowTask extends org.jdesktop.application.Task<Object, Void> {
+
         ShowPriceWindowTask(org.jdesktop.application.Application app) {
             // Runs on the EDT.  Copy GUI state that
             // doInBackground() depends on from parameters
             // to ShowPriceWindowTask fields, here.
             super(app);
-            
+
         }
-        @Override protected Object doInBackground() {
+
+        @Override
+        protected Object doInBackground() {
             if (priceWindow == null) {
                 priceWindow = new PriceWindow();
             }
             showWindow(priceWindow);
             return null;  // return your result
         }
-        @Override protected void succeeded(Object result) {
+
+        @Override
+        protected void succeeded(Object result) {
             // Runs on the EDT.  Update the GUI based on
             // the result computed by doInBackground().
         }
@@ -295,13 +324,16 @@ public class DesktopView extends FrameView {
     }
 
     private class UpdateTask extends org.jdesktop.application.Task<Object, Void> {
+
         UpdateTask(org.jdesktop.application.Application app) {
             // Runs on the EDT.  Copy GUI state that
             // doInBackground() depends on from parameters
             // to UpdateTask fields, here.
             super(app);
         }
-        @Override protected Object doInBackground() {
+
+        @Override
+        protected Object doInBackground() {
             // Your Task's code here.  This method runs
             // on a background thread, so don't reference
             // the Swing GUI from here.
@@ -309,68 +341,70 @@ public class DesktopView extends FrameView {
             List<Stock> stocks = query.getResultList();
             List<Stock> webStocks = MarketReader.fetchStockList("^STI");
 
-            for(Stock s:webStocks){
-                if(!stocks.contains(s)){
+            for (Stock s : webStocks) {
+                if (!stocks.contains(s)) {
                     s.setCreateDate(new Date());
                     s.setUpdateDate(new Date());
-                    setMessage("Add stock "+s.getName());
+                    setMessage("Add stock " + s.getName());
                     entityManager.getTransaction().begin();
                     entityManager.persist(s);
                     entityManager.getTransaction().commit();
                 }
-                setMessage("Update price "+s.getName());
-                Query q = entityManager.createQuery("select max(p.pricePK.priceDate) from Price p where p.pricePK.stock='"+s.getSymbol()+"'");
+                setMessage("Update price " + s.getName());
+                Query q = entityManager.createQuery("select max(p.pricePK.priceDate) from Price p where p.pricePK.stock='" + s.getSymbol() + "'");
                 Object o = q.getSingleResult();
                 System.out.println(o);
                 Date lastDate = null;
-                if(o!=null){
-                    lastDate = DateUtils.addDays((Date)o, 1);
+                if (o != null) {
+                    lastDate = DateUtils.addDays((Date) o, 1);
                 }
                 entityManager.getTransaction().begin();
-                List<Price> prices = MarketReader.fetchStockPrice(s.getSymbol(),lastDate);
-                for(Price p:prices){
+                List<Price> prices = MarketReader.fetchStockPrice(s.getSymbol(), lastDate);
+                for (Price p : prices) {
                     p.setCreateDate(new Date());
                     p.setUpdateDate(new Date());
                     entityManager.persist(p);
                 }
                 entityManager.getTransaction().commit();
-                setProgress(webStocks.indexOf(s)+1, 0, webStocks.size());
-            }           
+                setProgress(webStocks.indexOf(s) + 1, 0, webStocks.size());
+            }
             return null;  // return your result
         }
-        @Override protected void succeeded(Object result) {
+
+        @Override
+        protected void succeeded(Object result) {
             // Runs on the EDT.  Update the GUI based on
             // the result computed by doInBackground().
-             setMessage("Done.");
+            setMessage("Done.");
         }
-    }
-
-    @Action
-    public void showCodeTypeWindow() {
-        if (codeTypeWindow == null) {
-            codeTypeWindow = new CodeTypeWindow();
-        }
-        showWindow(codeTypeWindow);
     }
 
     @Action
     public void showSystemCodeWindow() {
-        if(systemCodeWindow==null){
-            systemCodeWindow = new SystemCodeWindow();
+        if (systemCodePanel == null) {
+            systemCodePanel = new SystemCodePanel();
         }
-        showWindow(systemCodeWindow);
+        showPanel(systemCodePanel);
     }
 
+    @Action
+    public void showStockPriceChart() {
+        if (priceChartWindow == null) {
+            priceChartWindow = new PriceChartWindow();
+        }
+        showWindow(priceChartWindow);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JProgressBar progressBar;
@@ -386,6 +420,6 @@ public class DesktopView extends FrameView {
     private JDialog aboutBox;
     private StockWindow stockWindow;
     private PriceWindow priceWindow;
-    private CodeTypeWindow codeTypeWindow;
-    private SystemCodeWindow systemCodeWindow;
+    private SystemCodePanel systemCodePanel;
+    private PriceChartWindow priceChartWindow;
 }
