@@ -120,6 +120,7 @@ public class DesktopView extends FrameView {
         jMenu4 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
@@ -178,6 +179,11 @@ public class DesktopView extends FrameView {
         jMenuItem5.setText(resourceMap.getString("jMenuItem5.text")); // NOI18N
         jMenuItem5.setName("jMenuItem5"); // NOI18N
         jMenu4.add(jMenuItem5);
+
+        jMenuItem8.setAction(actionMap.get("showPortfolioWindow")); // NOI18N
+        jMenuItem8.setText(resourceMap.getString("jMenuItem8.text")); // NOI18N
+        jMenuItem8.setName("jMenuItem8"); // NOI18N
+        jMenu4.add(jMenuItem8);
 
         menuBar.add(jMenu4);
 
@@ -420,6 +426,11 @@ public class DesktopView extends FrameView {
     public void shoTradeOrderWindow() {
 //        showPanel(new TradeOrderPanel(), "Trade Order");
     }
+
+    @Action
+    public void showPortfolioWindow() {
+        showWindow(new PortfolioWindow());
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JDesktopPane jDesktopPane1;
@@ -435,6 +446,7 @@ public class DesktopView extends FrameView {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JProgressBar progressBar;
