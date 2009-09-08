@@ -6,17 +6,19 @@
 package desktop.bean;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
  *
- * @author sweet99
+ * @author Gao.chao.wei
  */
 @Entity
 @Table(name = "PORTFOLIO")
@@ -32,8 +34,11 @@ public class Portfolio implements Serializable {
     private String name;
     @Column(name = "REMARK")
     private String remark;
+    @OneToMany(mappedBy = "portfolio")
+    private List<StockPosition> stockPositionList;
 
     public Portfolio() {
+        stockPositionList = new java.util.ArrayList<StockPosition>();
     }
 
     public Portfolio(Integer id) {
@@ -67,6 +72,14 @@ public class Portfolio implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public List<StockPosition> getStockPositionList() {
+        return stockPositionList;
+    }
+
+    public void setStockPositionList(List<StockPosition> stockPositionList) {
+        this.stockPositionList = stockPositionList;
     }
 
     @Override
