@@ -4,11 +4,9 @@
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <class>desktop.bean.Price</class>
     <class>desktop.bean.Stock</class>
-    <class>desktop.bean.SystemCode</class>
-    <class>desktop.bean.CodeType</class>
     <class>desktop.bean.Account</class>
     <class>desktop.bean.Portfolio</class>
-    <class>desktop.bean.StockOrder</class>
+    <class>desktop.bean.OrderType</class>
     <properties>
       <property name="hibernate.connection.username" value="root"/>
       <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.ClientDriver"/>

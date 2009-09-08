@@ -1,3 +1,10 @@
+drop table order_type;
+
+create table order_type (
+id integer not null primary key,
+text varchar(30) not null
+);
+
 drop table account;
 
 create table account (
@@ -12,13 +19,13 @@ create table portfolio (
     name varchar(30) not null,
     remark varchar(100));
 
-drop table stock_order;
+drop table trade_order;
 
-create table stock_order (
+create table trade_order (
     id integer not null primary key,
     name varchar(50),
-    Order_type integer not null,
-    stock_symbol varchar(10),
+    order_type integer not null references order_type(id),
+    stock varchar(10) references stock(symbol),
     quantity integer,
     price double,
     order_time timestamp,
