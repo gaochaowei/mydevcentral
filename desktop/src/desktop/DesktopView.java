@@ -119,6 +119,7 @@ public class DesktopView extends FrameView {
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
@@ -126,7 +127,8 @@ public class DesktopView extends FrameView {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItem7 = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
@@ -172,6 +174,11 @@ public class DesktopView extends FrameView {
         jMenuItem4.setName("jMenuItem4"); // NOI18N
         jMenu4.add(jMenuItem4);
 
+        jMenuItem5.setAction(actionMap.get("shoTradeOrderWindow")); // NOI18N
+        jMenuItem5.setText(resourceMap.getString("jMenuItem5.text")); // NOI18N
+        jMenuItem5.setName("jMenuItem5"); // NOI18N
+        jMenu4.add(jMenuItem5);
+
         menuBar.add(jMenu4);
 
         jMenu3.setText(resourceMap.getString("jMenu3.text")); // NOI18N
@@ -208,10 +215,15 @@ public class DesktopView extends FrameView {
         jMenu2.setText(resourceMap.getString("jMenu2.text")); // NOI18N
         jMenu2.setName("jMenu2"); // NOI18N
 
-        jMenuItem5.setAction(actionMap.get("showSystemCodeWindow")); // NOI18N
-        jMenuItem5.setText(resourceMap.getString("jMenuItem5.text")); // NOI18N
-        jMenuItem5.setName("jMenuItem5"); // NOI18N
-        jMenu2.add(jMenuItem5);
+        jMenu5.setText(resourceMap.getString("jMenu5.text")); // NOI18N
+        jMenu5.setName("jMenu5"); // NOI18N
+
+        jMenuItem7.setAction(actionMap.get("showOrderTypeWindow")); // NOI18N
+        jMenuItem7.setText(resourceMap.getString("jMenuItem7.text")); // NOI18N
+        jMenuItem7.setName("jMenuItem7"); // NOI18N
+        jMenu5.add(jMenuItem7);
+
+        jMenu2.add(jMenu5);
 
         menuBar.add(jMenu2);
 
@@ -268,10 +280,7 @@ public class DesktopView extends FrameView {
 
     @Action
     public void showStockWindow() {
-        if (stockWindow == null) {
-            stockWindow = new StockWindow();
-        }
-        showWindow(stockWindow);
+        showWindow(new StockWindow());
     }
 
     private void showWindow(JInternalFrame window) {
@@ -283,8 +292,12 @@ public class DesktopView extends FrameView {
         }
     }
 
-    private void showPanel(JPanel panel) {
+    private void showPanel(JPanel panel){
+        showPanel(panel,null);
+    }
+    private void showPanel(JPanel panel, String title) {
         JInternalFrame window = new JInternalFrame();
+        window.setTitle(title);
         window.setContentPane(panel);
         window.setResizable(true);
         window.setClosable(true);
@@ -316,11 +329,8 @@ public class DesktopView extends FrameView {
 
         @Override
         protected Object doInBackground() {
-            if (priceWindow == null) {
-                priceWindow = new PriceWindow();
-            }
-            showWindow(priceWindow);
-            return null;  // return your result
+            showWindow(new PriceWindow());
+            return null;
         }
 
         @Override
@@ -392,24 +402,23 @@ public class DesktopView extends FrameView {
     }
 
     @Action
-    public void showSystemCodeWindow() {
-        if (systemCodePanel == null) {
-            systemCodePanel = new SystemCodePanel();
-        }
-        showPanel(systemCodePanel);
-    }
-
-    @Action
     public void showStockPriceChart() {
-        if (priceChartWindow == null) {
-            priceChartWindow = new PriceChartWindow();
-        }
-        showWindow(priceChartWindow);
+        showWindow(new PriceChartWindow());
     }
 
     @Action
     public void showAccountWindow() {
-        showPanel(new AccountPanel());
+        showPanel(new AccountPanel(), "Account");
+    }
+
+    @Action
+    public void showOrderTypeWindow() {
+         showPanel(new OrderTypePanel(), "Order Type");
+    }
+
+    @Action
+    public void shoTradeOrderWindow() {
+//        showPanel(new TradeOrderPanel(), "Trade Order");
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.persistence.EntityManager entityManager;
@@ -418,12 +427,14 @@ public class DesktopView extends FrameView {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JProgressBar progressBar;
@@ -437,8 +448,4 @@ public class DesktopView extends FrameView {
     private final Icon[] busyIcons = new Icon[15];
     private int busyIconIndex = 0;
     private JDialog aboutBox;
-    private StockWindow stockWindow;
-    private PriceWindow priceWindow;
-    private SystemCodePanel systemCodePanel;
-    private PriceChartWindow priceChartWindow;
 }
