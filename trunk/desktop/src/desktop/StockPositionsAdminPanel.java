@@ -89,6 +89,7 @@ public class StockPositionsAdminPanel extends JPanel {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${buyDate}"));
         columnBinding.setColumnName("Buy Date");
         columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setConverter(desktop.swing.DateConverter.instance);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${comission}"));
         columnBinding.setColumnName("Comission");
         columnBinding.setColumnClass(Double.class);

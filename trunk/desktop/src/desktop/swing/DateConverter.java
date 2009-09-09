@@ -17,12 +17,14 @@ public class DateConverter extends Converter<Date, String> {
     public static DateConverter instance = new DateConverter();
 
     public String convertForward(Date date) {
-        System.out.println("convertForward");
+        System.out.println("DateConverter.convertForward...."+date);
+        System.out.println("----->"+CommonUtils.format(date));
         return CommonUtils.format(date);
     }
 
     public Date convertReverse(String arg) {
-        System.out.println("convertReverse");
+        System.out.println("DateConverter.convertReverse...."+arg);
+        System.out.println("----->"+CommonUtils.parse(arg));
         return CommonUtils.parse(arg);
     }
 }
