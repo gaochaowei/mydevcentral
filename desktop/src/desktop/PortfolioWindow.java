@@ -12,8 +12,6 @@
 package desktop;
 
 import desktop.bean.Portfolio;
-import desktop.bean.StockPosition;
-import java.util.Date;
 
 /**
  *
@@ -24,23 +22,13 @@ public class PortfolioWindow extends javax.swing.JInternalFrame {
     /** Creates new form PortfolioWindow */
     public PortfolioWindow() {
         initComponents();
-        Portfolio p = new Portfolio();
-        p.setId(1);
-        p.setName("Long term");
-        p.setRemark("this porfolio is for testing only");
-        p.setStockPositionList(new java.util.ArrayList<desktop.bean.StockPosition>());
-        StockPosition ps = new StockPosition();
-        ps.setBuyDate(new Date());
-        ps.setId(1);
-        list.add(p);
-        p.getStockPositionList().add(ps);
-        for(Portfolio p2:list){
-            addPortfolio(p2);
+        for(Portfolio p:list){
+            addPortfolio(p);
         }
     }
 
     private void addPortfolio(Portfolio p){
-        PortfolioPanel pp = new PortfolioPanel();
+        StockPositionPanel pp = new StockPositionPanel();
         pp.setPortfolio(p);
         jTabbedPane1.addTab(p.getName(), pp); // NOI18N
     }
@@ -60,6 +48,7 @@ public class PortfolioWindow extends javax.swing.JInternalFrame {
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : query.getResultList();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
+        portfolioAdminPanel1 = new desktop.PortfolioAdminPanel();
 
         setClosable(true);
         setIconifiable(true);
@@ -77,24 +66,27 @@ public class PortfolioWindow extends javax.swing.JInternalFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 375, Short.MAX_VALUE)
+            .addGap(0, 565, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 224, Short.MAX_VALUE)
+            .addGap(0, 293, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
+
+        portfolioAdminPanel1.setName("portfolioAdminPanel1"); // NOI18N
+        jTabbedPane1.addTab(resourceMap.getString("portfolioAdminPanel1.TabConstraints.tabTitle"), portfolioAdminPanel1); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
         );
 
         pack();
@@ -106,6 +98,7 @@ public class PortfolioWindow extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private java.util.List<desktop.bean.Portfolio> list;
+    private desktop.PortfolioAdminPanel portfolioAdminPanel1;
     private javax.persistence.Query query;
     // End of variables declaration//GEN-END:variables
 

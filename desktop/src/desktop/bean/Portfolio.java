@@ -5,16 +5,21 @@
 
 package desktop.bean;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -24,12 +29,14 @@ import javax.persistence.Table;
 @Table(name = "PORTFOLIO")
 @NamedQueries({@NamedQuery(name = "Portfolio.findAll", query = "SELECT p FROM Portfolio p"), @NamedQuery(name = "Portfolio.findById", query = "SELECT p FROM Portfolio p WHERE p.id = :id"), @NamedQuery(name = "Portfolio.findByName", query = "SELECT p FROM Portfolio p WHERE p.name = :name"), @NamedQuery(name = "Portfolio.findByRemark", query = "SELECT p FROM Portfolio p WHERE p.remark = :remark")})
 public class Portfolio implements Serializable {
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    @Basic(optional = false)
     @Column(name = "NAME")
     private String name;
     @Column(name = "REMARK")
@@ -55,7 +62,9 @@ public class Portfolio implements Serializable {
     }
 
     public void setId(Integer id) {
+        Integer oldId = this.id;
         this.id = id;
+        changeSupport.firePropertyChange("id", oldId, id);
     }
 
     public String getName() {
@@ -63,7 +72,9 @@ public class Portfolio implements Serializable {
     }
 
     public void setName(String name) {
+        String oldName = this.name;
         this.name = name;
+        changeSupport.firePropertyChange("name", oldName, name);
     }
 
     public String getRemark() {
@@ -71,7 +82,9 @@ public class Portfolio implements Serializable {
     }
 
     public void setRemark(String remark) {
+        String oldRemark = this.remark;
         this.remark = remark;
+        changeSupport.firePropertyChange("remark", oldRemark, remark);
     }
 
     public List<StockPosition> getStockPositionList() {
@@ -105,6 +118,14 @@ public class Portfolio implements Serializable {
     @Override
     public String toString() {
         return "desktop.bean.Portfolio[id=" + id + "]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
 
 }

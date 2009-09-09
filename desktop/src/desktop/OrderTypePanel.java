@@ -201,7 +201,6 @@ public class OrderTypePanel extends JPanel {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         desktop.bean.OrderType o = new desktop.bean.OrderType();
-        o.setId(list.size()+1);
         o.setText("");
         entityManager.persist(o);
         list.add(o);
