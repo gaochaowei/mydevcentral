@@ -11,7 +11,7 @@ import org.apache.commons.lang.time.DateUtils;
 
 public class CommonUtils {
 
-    private static String DEFAULT_DATE_FORMAT = "dd/MM/yyyy";
+    private static String DEFAULT_DATE_FORMAT = "yyyy/MM/dd";
 
     public static boolean isDouble(String s) {
         try {

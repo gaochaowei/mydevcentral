@@ -12,6 +12,7 @@ package desktop;
 
 import desktop.bean.Portfolio;
 import desktop.bean.Stock;
+import desktop.bean.StockPosition;
 import java.awt.EventQueue;
 import java.beans.Beans;
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class StockPositionsAdminPanel extends JPanel {
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(desktop.DesktopApp.class).getContext().getResourceMap(StockPositionsAdminPanel.class);
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory(resourceMap.getString("entityManager.persistenceUnit")).createEntityManager(); // NOI18N
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(resourceMap.getString("query.query")); // NOI18N
-        list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
+        list = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<StockPosition>());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         stockLabel = new javax.swing.JLabel();
@@ -88,7 +89,7 @@ public class StockPositionsAdminPanel extends JPanel {
         columnBinding.setColumnClass(Double.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${buyDate}"));
         columnBinding.setColumnName("Buy Date");
-        columnBinding.setColumnClass(String.class);	
+        columnBinding.setColumnClass(String.class);
 	columnBinding.setConverter(desktop.swing.DateConverter.instance);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${comission}"));
         columnBinding.setColumnName("Comission");
@@ -276,12 +277,14 @@ public class StockPositionsAdminPanel extends JPanel {
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
-        java.util.Collection data = query.getResultList();
+        list.clear();
+        if(portfolio!=null){
+        java.util.Collection data = query.setParameter("portfolio", portfolio).getResultList();
         for (Object entity : data) {
             entityManager.refresh(entity);
         }
-        list.clear();
         list.addAll(data);
+        }
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -299,7 +302,6 @@ public class StockPositionsAdminPanel extends JPanel {
         desktop.bean.StockPosition s = new desktop.bean.StockPosition();
         s.setPortfolio(portfolio);
         s.setStock(new Stock());
-        s.getStock().setSymbol("D05.SI");
         entityManager.persist(s);
         list.add(s);
         int row = list.size() - 1;
