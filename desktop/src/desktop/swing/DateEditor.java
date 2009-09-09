@@ -31,7 +31,9 @@ public class DateEditor extends DefaultCellEditor {
     @Override
     public Object getCellEditorValue() {
         System.out.println("DateEditor.getCellEditorValue... "+textField.getText());
-        return CommonUtils.parse(textField.getText());
+        System.out.println("----->"+CommonUtils.parse(textField.getText()));
+        return textField.getText();
+//        return CommonUtils.parse(textField.getText());
     }
 
     @Override
@@ -40,9 +42,10 @@ public class DateEditor extends DefaultCellEditor {
             boolean isSelected,
             int row,
             int column) {
-         System.out.println("DateEditor.getTableCellEditorComponent... "+textField.getText());
+         System.out.println("DateEditor.getTableCellEditorComponent... "+value);
         textField = (JTextField) super.getTableCellEditorComponent(table, value, isSelected, row, column);
-        textField.setText(CommonUtils.format((Date) value));
+//        textField.setText(CommonUtils.format((Date)value));
+        textField.setText(String.valueOf(value));
         textField.setBackground(Color.yellow);
         textField.setBorder(BorderFactory.createEmptyBorder());
         return textField;

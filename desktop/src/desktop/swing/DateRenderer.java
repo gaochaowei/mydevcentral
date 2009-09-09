@@ -20,8 +20,9 @@ public class DateRenderer extends DefaultTableCellRenderer {
         super();
     }
 
+    @Override
     public void setValue(Object value) {
-        System.out.println("DateRenderer.setValue..."+value);
+        System.out.println("DateRenderer.setValue... "+value);
         String text = "";
         if (value != null) {
             if (value instanceof Date) {
@@ -30,6 +31,7 @@ public class DateRenderer extends DefaultTableCellRenderer {
                 text = value.toString();
             }
         }
+        System.out.println("----->"+text);
         setText(text);
     }
 }
