@@ -88,8 +88,8 @@ public class StockPositionsAdminPanel extends JPanel {
         columnBinding.setColumnClass(Double.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${buyDate}"));
         columnBinding.setColumnName("Buy Date");
-        columnBinding.setColumnClass(java.util.Date.class);
-        columnBinding.setConverter(desktop.swing.DateConverter.instance);
+        columnBinding.setColumnClass(String.class);	
+	columnBinding.setConverter(desktop.swing.DateConverter.instance);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${comission}"));
         columnBinding.setColumnName("Comission");
         columnBinding.setColumnClass(Double.class);
@@ -101,8 +101,6 @@ public class StockPositionsAdminPanel extends JPanel {
         masterTable.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("masterTable.columnModel.title2")); // NOI18N
         masterTable.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("masterTable.columnModel.title3")); // NOI18N
         masterTable.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("masterTable.columnModel.title4")); // NOI18N
-        masterTable.getColumnModel().getColumn(4).setCellEditor(desktop.swing.DateEditor.instance);
-        masterTable.getColumnModel().getColumn(4).setCellRenderer(desktop.swing.DateRenderer.instance);
         masterTable.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("masterTable.columnModel.title5")); // NOI18N
 
         stockLabel.setText(resourceMap.getString("stockLabel.text")); // NOI18N
@@ -145,13 +143,13 @@ public class StockPositionsAdminPanel extends JPanel {
         bindingGroup.addBinding(binding);
 
         buyDateField.setName("buyDateField"); // NOI18N
-
+/*
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.buyDate}"), buyDateField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue(null);
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), buyDateField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
-
+*/
         comissionField.setName("comissionField"); // NOI18N
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.comission}"), comissionField, org.jdesktop.beansbinding.BeanProperty.create("text"));
@@ -307,6 +305,7 @@ public class StockPositionsAdminPanel extends JPanel {
         int row = list.size() - 1;
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
+        System.out.println(masterTable.getModel().getValueAt(2, 4));
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed

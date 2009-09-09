@@ -42,11 +42,9 @@ public class Price implements Serializable {
     private Double priceAdj;
     @Column(name = "TRADE_VOLUMN")
     private Integer tradeVolumn;
-    @Basic(optional = false)
     @Column(name = "CREATE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
-    @Basic(optional = false)
     @Column(name = "UPDATE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate;

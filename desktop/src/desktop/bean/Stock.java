@@ -34,11 +34,9 @@ public class Stock implements Serializable {
     private String symbol;
     @Column(name = "NAME")
     private String name;
-    @Basic(optional = false)
     @Column(name = "CREATE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
-    @Basic(optional = false)
     @Column(name = "UPDATE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate;
