@@ -63,7 +63,7 @@ public class MarketReader {
     public static List<Price> fetchStockPrice(String symbol,
             Date from, Date to, Frequency freq) {
         if (from == null) {
-            from = CommonUtils.getDate("01/01/1000");
+            from = CommonUtils.parse("01/01/1000");
         }
         if (to == null) {
             to = new Date();
@@ -76,7 +76,7 @@ public class MarketReader {
         List<Price> pxs = new ArrayList<Price>();
         for (String[] ss : csv.data) {
             Price px = new Price();
-            PricePK pk = new PricePK(symbol,CommonUtils.getDate(ss[0], "yyyy-MM-dd"));
+            PricePK pk = new PricePK(symbol,CommonUtils.parse(ss[0], "yyyy-MM-dd"));
             px.setPricePK(pk);
             px.setPriceOpen(Double.parseDouble(ss[1]));
             px.setPriceHigh(Double.parseDouble(ss[2]));

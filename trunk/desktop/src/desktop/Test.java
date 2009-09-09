@@ -52,7 +52,7 @@ public class Test {
         StockPosition p = new StockPosition();
         p.setId(1);
         p.setStock(getStock());
-        p.setBuyDate(CommonUtils.getDate("18/03/2009"));
+        p.setBuyDate(CommonUtils.parse("18/03/2009"));
         p.setQuantity(1000);
         p.setPricePaid(7.36);
         p.setComission(30.0);
