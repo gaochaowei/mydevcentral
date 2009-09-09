@@ -3,6 +3,26 @@ drop table portfolio;
 drop table trade_order;
 drop table account;
 drop table order_type;
+drop table price;
+drop table stock;
+
+create table stock (
+    symbol varchar(10) not null primary key,
+    name varchar(30),
+    create_date date not null default current_date,
+    update_date date not null default current_date);
+
+create table price (
+    stock varchar(10) not null references stock(symbol),
+    price_date date not null,
+    price_open double,
+    price_high double,
+    price_low double,
+    price_adj double,
+    trade_volumn integer,
+    create_date date not null default current_date,
+    update_date date not null default current_date,
+    primary key (stock,price_date));
 
 create table order_type (
     id integer not null primary key generated always as identity,
@@ -26,7 +46,7 @@ create table trade_order (
     stock varchar(10) references stock(symbol),
     quantity integer,
     price double,
-    order_time timestamp,
+    order_date date,
     remark varchar(100));
 
 create table stock_position (
@@ -35,5 +55,5 @@ create table stock_position (
     stock varchar(10) references stock(symbol),
     quantity integer,
     price_paid double,
-    buy_date timestamp,
+    buy_date date,
     comission double);
