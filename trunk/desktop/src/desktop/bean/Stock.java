@@ -2,14 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package desktop.bean;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -28,6 +26,7 @@ import javax.persistence.TemporalType;
 @Table(name = "STOCK")
 @NamedQueries({@NamedQuery(name = "Stock.findAll", query = "SELECT s FROM Stock s"), @NamedQuery(name = "Stock.findBySymbol", query = "SELECT s FROM Stock s WHERE s.symbol = :symbol"), @NamedQuery(name = "Stock.findByName", query = "SELECT s FROM Stock s WHERE s.name = :name"), @NamedQuery(name = "Stock.findByCreateDate", query = "SELECT s FROM Stock s WHERE s.createDate = :createDate"), @NamedQuery(name = "Stock.findByUpdateDate", query = "SELECT s FROM Stock s WHERE s.updateDate = :updateDate")})
 public class Stock implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -43,8 +42,8 @@ public class Stock implements Serializable {
     @Column(name = "UPDATE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate;
-        @OneToMany(mappedBy = "stock")
-    private Collection<Price> priceCollection;
+    @OneToMany(mappedBy = "stock")
+    private List<Price> priceList;
 
     public Stock() {
     }
@@ -91,12 +90,12 @@ public class Stock implements Serializable {
         this.updateDate = updateDate;
     }
 
-    public Collection<Price> getPriceCollection() {
-        return priceCollection;
+    public List<Price> getPriceList() {
+        return priceList;
     }
 
-    public void setPriceCollection(Collection<Price> priceCollection) {
-        this.priceCollection = priceCollection;
+    public void setPriceList(List<Price> priceList) {
+        this.priceList = priceList;
     }
 
     @Override
@@ -123,5 +122,4 @@ public class Stock implements Serializable {
     public String toString() {
         return "desktop.bean.Stock[symbol=" + symbol + "]";
     }
-
 }

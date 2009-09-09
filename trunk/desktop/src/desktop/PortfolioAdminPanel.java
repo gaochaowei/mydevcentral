@@ -4,9 +4,9 @@
  */
 
 /*
- * AccountPanel.java
+ * PortfolioAdminPanel.java
  *
- * Created on Sep 7, 2009, 9:35:15 PM
+ * Created on Sep 9, 2009, 8:59:39 AM
  */
 
 package desktop;
@@ -21,11 +21,11 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author sweet99
+ * @author Gao.chao.wei
  */
-public class AccountPanel extends JPanel {
+public class PortfolioAdminPanel extends JPanel {
     
-    public AccountPanel() {
+    public PortfolioAdminPanel() {
         initComponents();
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
@@ -42,16 +42,16 @@ public class AccountPanel extends JPanel {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(desktop.DesktopApp.class).getContext().getResourceMap(AccountPanel.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(desktop.DesktopApp.class).getContext().getResourceMap(PortfolioAdminPanel.class);
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory(resourceMap.getString("entityManager.persistenceUnit")).createEntityManager(); // NOI18N
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(resourceMap.getString("query.query")); // NOI18N
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         nameLabel = new javax.swing.JLabel();
-        balanceLabel = new javax.swing.JLabel();
+        remarkLabel = new javax.swing.JLabel();
         nameField = new javax.swing.JTextField();
-        balanceField = new javax.swing.JTextField();
+        remarkField = new javax.swing.JTextField();
         saveButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
         newButton = new javax.swing.JButton();
@@ -72,18 +72,21 @@ public class AccountPanel extends JPanel {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${name}"));
         columnBinding.setColumnName("Name");
         columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${balance}"));
-        columnBinding.setColumnName("Balance");
-        columnBinding.setColumnClass(Double.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${remark}"));
+        columnBinding.setColumnName("Remark");
+        columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
-
+        jTableBinding.bind();
         masterScrollPane.setViewportView(masterTable);
+        masterTable.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("masterTable.columnModel.title0")); // NOI18N
+        masterTable.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("masterTable.columnModel.title1")); // NOI18N
+        masterTable.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("masterTable.columnModel.title2")); // NOI18N
 
         nameLabel.setText(resourceMap.getString("nameLabel.text")); // NOI18N
         nameLabel.setName("nameLabel"); // NOI18N
 
-        balanceLabel.setText(resourceMap.getString("balanceLabel.text")); // NOI18N
-        balanceLabel.setName("balanceLabel"); // NOI18N
+        remarkLabel.setText(resourceMap.getString("remarkLabel.text")); // NOI18N
+        remarkLabel.setName("remarkLabel"); // NOI18N
 
         nameField.setName("nameField"); // NOI18N
 
@@ -93,12 +96,12 @@ public class AccountPanel extends JPanel {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), nameField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        balanceField.setName("balanceField"); // NOI18N
+        remarkField.setName("remarkField"); // NOI18N
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.balance}"), balanceField, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.remark}"), remarkField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue(null);
         bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), balanceField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), remarkField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         saveButton.setText(resourceMap.getString("saveButton.text")); // NOI18N
@@ -126,7 +129,6 @@ public class AccountPanel extends JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(newButton)
@@ -137,14 +139,17 @@ public class AccountPanel extends JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(balanceLabel)
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nameLabel)
+                            .addComponent(remarkLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(balanceField, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(nameLabel)
-                        .addGap(14, 14, 14)
-                        .addComponent(nameField, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nameField, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+                            .addComponent(remarkField, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -154,16 +159,16 @@ public class AccountPanel extends JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nameLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(nameLabel)
+                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(balanceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(balanceLabel))
-                .addGap(9, 9, 9)
+                    .addComponent(remarkLabel)
+                    .addComponent(remarkField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
@@ -181,16 +186,16 @@ public class AccountPanel extends JPanel {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                AccountPanel.this.saveButtonActionPerformed(evt);
+                PortfolioAdminPanel.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                AccountPanel.this.refreshButtonActionPerformed(evt);
+                PortfolioAdminPanel.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                AccountPanel.this.newButtonActionPerformed(evt);
+                PortfolioAdminPanel.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                AccountPanel.this.deleteButtonActionPerformed(evt);
+                PortfolioAdminPanel.this.deleteButtonActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -210,20 +215,19 @@ public class AccountPanel extends JPanel {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int[] selected = masterTable.getSelectedRows();
-        List<desktop.bean.Account> toRemove = new ArrayList<desktop.bean.Account>(selected.length);
+        List<desktop.bean.Portfolio> toRemove = new ArrayList<desktop.bean.Portfolio>(selected.length);
         for (int idx=0; idx<selected.length; idx++) {
-            desktop.bean.Account a = list.get(masterTable.convertRowIndexToModel(selected[idx]));
-            toRemove.add(a);
-            entityManager.remove(a);
+            desktop.bean.Portfolio p = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+            toRemove.add(p);
+            entityManager.remove(p);
         }
         list.removeAll(toRemove);
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        desktop.bean.Account a = new desktop.bean.Account();
-        a.setName("");
-        entityManager.persist(a);        
-        list.add(a);
+        desktop.bean.Portfolio p = new desktop.bean.Portfolio();
+        entityManager.persist(p);
+        list.add(p);
         int row = list.size()-1;
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
@@ -236,9 +240,9 @@ public class AccountPanel extends JPanel {
         } catch (RollbackException rex) {
             rex.printStackTrace();
             entityManager.getTransaction().begin();
-            List<desktop.bean.Account> merged = new ArrayList<desktop.bean.Account>(list.size());
-            for (desktop.bean.Account a : list) {
-                merged.add(entityManager.merge(a));
+            List<desktop.bean.Portfolio> merged = new ArrayList<desktop.bean.Portfolio>(list.size());
+            for (desktop.bean.Portfolio p : list) {
+                merged.add(entityManager.merge(p));
             }
             list.clear();
             list.addAll(merged);
@@ -247,11 +251,9 @@ public class AccountPanel extends JPanel {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField balanceField;
-    private javax.swing.JLabel balanceLabel;
     private javax.swing.JButton deleteButton;
     private javax.persistence.EntityManager entityManager;
-    private java.util.List<desktop.bean.Account> list;
+    private java.util.List<desktop.bean.Portfolio> list;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JTextField nameField;
@@ -259,6 +261,8 @@ public class AccountPanel extends JPanel {
     private javax.swing.JButton newButton;
     private javax.persistence.Query query;
     private javax.swing.JButton refreshButton;
+    private javax.swing.JTextField remarkField;
+    private javax.swing.JLabel remarkLabel;
     private javax.swing.JButton saveButton;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
@@ -267,7 +271,7 @@ public class AccountPanel extends JPanel {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new AccountPanel());
+                frame.setContentPane(new PortfolioAdminPanel());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);

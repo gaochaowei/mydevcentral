@@ -5,6 +5,8 @@
 
 package desktop.bean;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -20,6 +22,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  *
@@ -29,15 +32,16 @@ import javax.persistence.TemporalType;
 @Table(name = "STOCK_POSITION")
 @NamedQueries({@NamedQuery(name = "StockPosition.findAll", query = "SELECT s FROM StockPosition s"), @NamedQuery(name = "StockPosition.findById", query = "SELECT s FROM StockPosition s WHERE s.id = :id"), @NamedQuery(name = "StockPosition.findByQuantity", query = "SELECT s FROM StockPosition s WHERE s.quantity = :quantity"), @NamedQuery(name = "StockPosition.findByPricePaid", query = "SELECT s FROM StockPosition s WHERE s.pricePaid = :pricePaid"), @NamedQuery(name = "StockPosition.findByBuyDate", query = "SELECT s FROM StockPosition s WHERE s.buyDate = :buyDate"), @NamedQuery(name = "StockPosition.findByComission", query = "SELECT s FROM StockPosition s WHERE s.comission = :comission")})
 public class StockPosition implements Serializable {
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    @Basic(optional = false)
     @Column(name = "QUANTITY")
-    private int quantity;
+    private Integer quantity;
     @Column(name = "PRICE_PAID")
     private Double pricePaid;
     @Column(name = "BUY_DATE")
@@ -48,8 +52,8 @@ public class StockPosition implements Serializable {
     @JoinColumn(name = "PORTFOLIO", referencedColumnName = "ID")
     @ManyToOne
     private Portfolio portfolio;
+    @ManyToOne
     @JoinColumn(name = "STOCK", referencedColumnName = "SYMBOL")
-    @ManyToOne(optional = false)
     private Stock stock;
 
     public StockPosition() {
@@ -69,15 +73,19 @@ public class StockPosition implements Serializable {
     }
 
     public void setId(Integer id) {
+        Integer oldId = this.id;
         this.id = id;
+        changeSupport.firePropertyChange("id", oldId, id);
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
+        Integer oldQuantity = this.quantity;
         this.quantity = quantity;
+        changeSupport.firePropertyChange("quantity", oldQuantity, quantity);
     }
 
     public Double getPricePaid() {
@@ -85,7 +93,9 @@ public class StockPosition implements Serializable {
     }
 
     public void setPricePaid(Double pricePaid) {
+        Double oldPricePaid = this.pricePaid;
         this.pricePaid = pricePaid;
+        changeSupport.firePropertyChange("pricePaid", oldPricePaid, pricePaid);
     }
 
     public Date getBuyDate() {
@@ -93,7 +103,9 @@ public class StockPosition implements Serializable {
     }
 
     public void setBuyDate(Date buyDate) {
+        Date oldBuyDate = this.buyDate;
         this.buyDate = buyDate;
+        changeSupport.firePropertyChange("buyDate", oldBuyDate, buyDate);
     }
 
     public Double getComission() {
@@ -101,7 +113,9 @@ public class StockPosition implements Serializable {
     }
 
     public void setComission(Double comission) {
+        Double oldComission = this.comission;
         this.comission = comission;
+        changeSupport.firePropertyChange("comission", oldComission, comission);
     }
 
     public Portfolio getPortfolio() {
@@ -109,7 +123,9 @@ public class StockPosition implements Serializable {
     }
 
     public void setPortfolio(Portfolio portfolio) {
+        Portfolio oldPortfolio = this.portfolio;
         this.portfolio = portfolio;
+        changeSupport.firePropertyChange("portfolio", oldPortfolio, portfolio);
     }
 
     public Stock getStock() {
@@ -117,7 +133,9 @@ public class StockPosition implements Serializable {
     }
 
     public void setStock(Stock stock) {
+        Stock oldStock = this.stock;
         this.stock = stock;
+        changeSupport.firePropertyChange("stock", oldStock, stock);
     }
 
     @Override
@@ -142,7 +160,16 @@ public class StockPosition implements Serializable {
 
     @Override
     public String toString() {
-        return "desktop.bean.StockPosition[id=" + id + "]";
+//        return "desktop.bean.StockPosition[id=" + id + "]";
+        return "[id=" + id + "]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
 
 }
