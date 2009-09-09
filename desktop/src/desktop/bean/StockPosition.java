@@ -103,6 +103,7 @@ public class StockPosition implements Serializable {
     }
 
     public void setBuyDate(Date buyDate) {
+        System.out.println("setBuyDate "+buyDate+" "+buyDate.getClass());
         Date oldBuyDate = this.buyDate;
         this.buyDate = buyDate;
         changeSupport.firePropertyChange("buyDate", oldBuyDate, buyDate);

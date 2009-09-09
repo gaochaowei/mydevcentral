@@ -31,6 +31,7 @@ public class StockPositionsAdminPanel extends JPanel {
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
+        
     }
 
     /** This method is called from within the constructor to
@@ -99,6 +100,8 @@ public class StockPositionsAdminPanel extends JPanel {
         masterTable.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("masterTable.columnModel.title2")); // NOI18N
         masterTable.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("masterTable.columnModel.title3")); // NOI18N
         masterTable.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("masterTable.columnModel.title4")); // NOI18N
+        masterTable.getColumnModel().getColumn(4).setCellEditor(desktop.swing.DateEditor.instance);
+        masterTable.getColumnModel().getColumn(4).setCellRenderer(desktop.swing.DateRenderer.instance);
         masterTable.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("masterTable.columnModel.title5")); // NOI18N
 
         stockLabel.setText(resourceMap.getString("stockLabel.text")); // NOI18N

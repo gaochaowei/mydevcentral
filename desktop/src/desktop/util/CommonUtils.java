@@ -1,6 +1,7 @@
 package desktop.util;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
@@ -9,6 +10,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.time.DateUtils;
 
 public class CommonUtils {
+
+    private static String DEFAULT_DATE_FORMAT = "dd/MM/yyyy";
 
     public static boolean isDouble(String s) {
         try {
@@ -19,11 +22,23 @@ public class CommonUtils {
         }
     }
 
-    public static Date getDate(String s) {
-        return getDate(s, "dd/MM/yyyy");
+    public static String format(Date date) {
+        return format(date, DEFAULT_DATE_FORMAT);
     }
 
-    public static Date getDate(String s, String format) {
+    public static String format(Date date, String format) {
+        if (date == null) {
+            return "";
+        }
+        SimpleDateFormat f = new SimpleDateFormat(format);
+        return f.format(date);
+    }
+
+    public static Date parse(String s) {
+        return parse(s, DEFAULT_DATE_FORMAT);
+    }
+
+    public static Date parse(String s, String format) {
         try {
             String[] formats = new String[]{format};
             return DateUtils.parseDate(s, formats);
