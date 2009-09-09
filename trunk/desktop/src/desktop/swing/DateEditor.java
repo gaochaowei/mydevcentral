@@ -31,8 +31,7 @@ public class DateEditor extends DefaultCellEditor {
     @Override
     public Object getCellEditorValue() {
         System.out.println("DateEditor.getCellEditorValue... "+textField.getText());
-//        return CommonUtils.parse(textField.getText());
-        return "Sep 4, 2009";
+        return CommonUtils.parse(textField.getText());
     }
 
     @Override
