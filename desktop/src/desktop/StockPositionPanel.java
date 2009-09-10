@@ -45,6 +45,7 @@ public class StockPositionPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         stockPositionsAdminPanel = new desktop.StockPositionsAdminPanel();
+        tradeTransactionPanel1 = new desktop.TradeTransactionPanel();
 
         setName("Form"); // NOI18N
 
@@ -89,6 +90,9 @@ public class StockPositionPanel extends javax.swing.JPanel {
         stockPositionsAdminPanel.setName("stockPositionsAdminPanel"); // NOI18N
         jTabbedPane1.addTab(resourceMap.getString("stockPositionsAdminPanel.TabConstraints.tabTitle"), stockPositionsAdminPanel); // NOI18N
 
+        tradeTransactionPanel1.setName("tradeTransactionPanel1"); // NOI18N
+        jTabbedPane1.addTab(resourceMap.getString("tradeTransactionPanel1.TabConstraints.tabTitle"), tradeTransactionPanel1); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -110,6 +114,7 @@ public class StockPositionPanel extends javax.swing.JPanel {
     private java.util.List<desktop.bean.StockPosition> positionList;
     private javax.persistence.Query query;
     private desktop.StockPositionsAdminPanel stockPositionsAdminPanel;
+    private desktop.TradeTransactionPanel tradeTransactionPanel1;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

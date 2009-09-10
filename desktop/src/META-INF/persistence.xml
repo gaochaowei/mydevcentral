@@ -6,8 +6,10 @@
     <class>desktop.bean.Stock</class>
     <class>desktop.bean.Account</class>
     <class>desktop.bean.Portfolio</class>
-    <class>desktop.bean.OrderType</class>
     <class>desktop.bean.StockPosition</class>
+    <class>desktop.bean.TransactionType</class>
+    <class>desktop.bean.TradeTransaction</class>
+    <class>desktop.bean.TradeTransactionClose</class>
     <properties>
       <property name="hibernate.connection.username" value="root"/>
       <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.ClientDriver"/>

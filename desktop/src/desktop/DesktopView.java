@@ -119,7 +119,6 @@ public class DesktopView extends FrameView {
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -175,11 +174,6 @@ public class DesktopView extends FrameView {
         jMenuItem4.setName("jMenuItem4"); // NOI18N
         jMenu4.add(jMenuItem4);
 
-        jMenuItem5.setAction(actionMap.get("shoTradeOrderWindow")); // NOI18N
-        jMenuItem5.setText(resourceMap.getString("jMenuItem5.text")); // NOI18N
-        jMenuItem5.setName("jMenuItem5"); // NOI18N
-        jMenu4.add(jMenuItem5);
-
         jMenuItem8.setAction(actionMap.get("showPortfolioWindow")); // NOI18N
         jMenuItem8.setText(resourceMap.getString("jMenuItem8.text")); // NOI18N
         jMenuItem8.setName("jMenuItem8"); // NOI18N
@@ -224,7 +218,7 @@ public class DesktopView extends FrameView {
         jMenu5.setText(resourceMap.getString("jMenu5.text")); // NOI18N
         jMenu5.setName("jMenu5"); // NOI18N
 
-        jMenuItem7.setAction(actionMap.get("showOrderTypeWindow")); // NOI18N
+        jMenuItem7.setAction(actionMap.get("showTransactionTypeWindow")); // NOI18N
         jMenuItem7.setText(resourceMap.getString("jMenuItem7.text")); // NOI18N
         jMenuItem7.setName("jMenuItem7"); // NOI18N
         jMenu5.add(jMenuItem7);
@@ -418,13 +412,8 @@ public class DesktopView extends FrameView {
     }
 
     @Action
-    public void showOrderTypeWindow() {
-         showPanel(new OrderTypePanel(), "Order Type");
-    }
-
-    @Action
-    public void shoTradeOrderWindow() {
-//        showPanel(new TradeOrderPanel(), "Trade Order");
+    public void showTransactionTypeWindow() {
+         showPanel(new TransactionTypePanel(), "Transaction Type");
     }
 
     @Action
@@ -463,7 +452,6 @@ public class DesktopView extends FrameView {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;

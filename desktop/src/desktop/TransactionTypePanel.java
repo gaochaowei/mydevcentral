@@ -4,7 +4,7 @@
  */
 
 /*
- * OrderTypePanel.java
+ * TransactionTypePanel.java
  *
  * Created on Sep 8, 2009, 12:37:04 PM
  */
@@ -23,9 +23,9 @@ import javax.swing.JPanel;
  *
  * @author Gao.chao.wei
  */
-public class OrderTypePanel extends JPanel {
+public class TransactionTypePanel extends JPanel {
     
-    public OrderTypePanel() {
+    public TransactionTypePanel() {
         initComponents();
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
@@ -42,7 +42,7 @@ public class OrderTypePanel extends JPanel {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(desktop.DesktopApp.class).getContext().getResourceMap(OrderTypePanel.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(desktop.DesktopApp.class).getContext().getResourceMap(TransactionTypePanel.class);
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory(resourceMap.getString("entityManager.persistenceUnit")).createEntityManager(); // NOI18N
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(resourceMap.getString("query.query")); // NOI18N
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
@@ -109,26 +109,24 @@ public class OrderTypePanel extends JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(newButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(deleteButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(refreshButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(saveButton)
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(newButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreshButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(textLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textField, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -161,16 +159,16 @@ public class OrderTypePanel extends JPanel {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                OrderTypePanel.this.saveButtonActionPerformed(evt);
+                TransactionTypePanel.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                OrderTypePanel.this.refreshButtonActionPerformed(evt);
+                TransactionTypePanel.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                OrderTypePanel.this.newButtonActionPerformed(evt);
+                TransactionTypePanel.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                OrderTypePanel.this.deleteButtonActionPerformed(evt);
+                TransactionTypePanel.this.deleteButtonActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -190,9 +188,9 @@ public class OrderTypePanel extends JPanel {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int[] selected = masterTable.getSelectedRows();
-        List<desktop.bean.OrderType> toRemove = new ArrayList<desktop.bean.OrderType>(selected.length);
+        List<desktop.bean.TransactionType> toRemove = new ArrayList<desktop.bean.TransactionType>(selected.length);
         for (int idx=0; idx<selected.length; idx++) {
-            desktop.bean.OrderType o = list.get(masterTable.convertRowIndexToModel(selected[idx]));
+            desktop.bean.TransactionType o = list.get(masterTable.convertRowIndexToModel(selected[idx]));
             toRemove.add(o);
             entityManager.remove(o);
         }
@@ -200,7 +198,7 @@ public class OrderTypePanel extends JPanel {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        desktop.bean.OrderType o = new desktop.bean.OrderType();
+        desktop.bean.TransactionType o = new desktop.bean.TransactionType();
         o.setText("");
         entityManager.persist(o);
         list.add(o);
@@ -216,8 +214,8 @@ public class OrderTypePanel extends JPanel {
         } catch (RollbackException rex) {
             rex.printStackTrace();
             entityManager.getTransaction().begin();
-            List<desktop.bean.OrderType> merged = new ArrayList<desktop.bean.OrderType>(list.size());
-            for (desktop.bean.OrderType o : list) {
+            List<desktop.bean.TransactionType> merged = new ArrayList<desktop.bean.TransactionType>(list.size());
+            for (desktop.bean.TransactionType o : list) {
                 merged.add(entityManager.merge(o));
             }
             list.clear();
@@ -229,7 +227,7 @@ public class OrderTypePanel extends JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton deleteButton;
     private javax.persistence.EntityManager entityManager;
-    private java.util.List<desktop.bean.OrderType> list;
+    private java.util.List<desktop.bean.TransactionType> list;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
     private javax.swing.JButton newButton;
@@ -245,7 +243,7 @@ public class OrderTypePanel extends JPanel {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new OrderTypePanel());
+                frame.setContentPane(new TransactionTypePanel());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);
