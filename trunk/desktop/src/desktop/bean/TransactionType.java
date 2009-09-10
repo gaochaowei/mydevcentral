@@ -24,9 +24,9 @@ import javax.persistence.Transient;
  * @author Gao.chao.wei
  */
 @Entity
-@Table(name = "ORDER_TYPE", catalog = "", schema = "ROOT")
-@NamedQueries({@NamedQuery(name = "OrderType.findAll", query = "SELECT o FROM OrderType o"), @NamedQuery(name = "OrderType.findById", query = "SELECT o FROM OrderType o WHERE o.id = :id"), @NamedQuery(name = "OrderType.findByText", query = "SELECT o FROM OrderType o WHERE o.text = :text")})
-public class OrderType implements Serializable {
+@Table(name = "TRANSACTION_TYPE", catalog = "", schema = "ROOT")
+@NamedQueries({@NamedQuery(name = "TransactionType.findAll", query = "SELECT t FROM TransactionType t"), @NamedQuery(name = "TransactionType.findById", query = "SELECT t FROM TransactionType t WHERE t.id = :id"), @NamedQuery(name = "TransactionType.findByText", query = "SELECT t FROM TransactionType t WHERE t.text = :text")})
+public class TransactionType implements Serializable {
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
@@ -38,14 +38,14 @@ public class OrderType implements Serializable {
     @Column(name = "TEXT")
     private String text;
 
-    public OrderType() {
+    public TransactionType() {
     }
 
-    public OrderType(Integer id) {
+    public TransactionType(Integer id) {
         this.id = id;
     }
 
-    public OrderType(Integer id, String text) {
+    public TransactionType(Integer id, String text) {
         this.id = id;
         this.text = text;
     }
@@ -80,10 +80,10 @@ public class OrderType implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof OrderType)) {
+        if (!(object instanceof TransactionType)) {
             return false;
         }
-        OrderType other = (OrderType) object;
+        TransactionType other = (TransactionType) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -92,7 +92,7 @@ public class OrderType implements Serializable {
 
     @Override
     public String toString() {
-        return "desktop.bean.OrderType[id=" + id + "]";
+        return "desktop.bean.TransactionType[id=" + id + "]";
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

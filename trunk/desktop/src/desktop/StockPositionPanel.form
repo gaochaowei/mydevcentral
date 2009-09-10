@@ -151,6 +151,18 @@
             </Constraint>
           </Constraints>
         </Component>
+        <Component class="desktop.TradeTransactionPanel" name="tradeTransactionPanel1">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="tradeTransactionPanel1" noResource="true"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Transaction">
+                <Property name="tabTitle" type="java.lang.String" resourceKey="tradeTransactionPanel1.TabConstraints.tabTitle"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>
