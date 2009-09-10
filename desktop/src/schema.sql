@@ -1,10 +1,10 @@
 drop table trade_transaction_close;
 drop table trade_transaction;
 drop table stock_position;
-drop table portfolio;
 drop table account;
 drop table transaction_type;
 drop table price;
+drop table portfolio;
 drop table stock;
 
 create table stock (

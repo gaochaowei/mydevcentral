@@ -11,6 +11,9 @@
 
 package desktop;
 
+import desktop.bean.Portfolio;
+import desktop.bean.Stock;
+import desktop.bean.TradeTransaction;
 import desktop.bean.TradeTransactionClosePK;
 import java.awt.EventQueue;
 import java.beans.Beans;
@@ -35,7 +38,18 @@ public class TradeTransactionPanel extends JPanel {
             entityManager.getTransaction().begin();
         }
     }
+    private Portfolio portfolio;
     
+    public Portfolio getPortfolio(){
+        return portfolio;
+    }
+
+    public void setPortfolio(Portfolio portfolio){
+        this.portfolio = portfolio;
+        list.clear();
+        list.addAll(portfolio.getTradeTransactionList());
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -49,7 +63,7 @@ public class TradeTransactionPanel extends JPanel {
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(desktop.DesktopApp.class).getContext().getResourceMap(TradeTransactionPanel.class);
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory(resourceMap.getString("entityManager.persistenceUnit")).createEntityManager(); // NOI18N
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(resourceMap.getString("query.query")); // NOI18N
-        list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
+        list = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<desktop.bean.TradeTransaction>());
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         newButton = new javax.swing.JButton();
@@ -73,6 +87,7 @@ public class TradeTransactionPanel extends JPanel {
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${id}"));
         columnBinding.setColumnName("Id");
         columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${transactionDate}"));
         columnBinding.setColumnName("Transaction Date");
         columnBinding.setColumnClass(java.util.Date.class);
@@ -288,7 +303,7 @@ public class TradeTransactionPanel extends JPanel {
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         entityManager.getTransaction().rollback();
         entityManager.getTransaction().begin();
-        java.util.Collection data = query.getResultList();
+        java.util.Collection data = query.setParameter("portfolio", portfolio).getResultList();
         for (Object entity : data) {
             entityManager.refresh(entity);
         }
@@ -309,6 +324,8 @@ public class TradeTransactionPanel extends JPanel {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         desktop.bean.TradeTransaction T = new desktop.bean.TradeTransaction();
+        T.setPortfolio(portfolio);
+        T.setStock(new Stock());
         entityManager.persist(T);
         list.add(T);
         int row = list.size()-1;

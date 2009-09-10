@@ -26,6 +26,7 @@ public class StockPositionPanel extends javax.swing.JPanel {
         positionList.clear();
         positionList.addAll(p.getStockPositionList());
         stockPositionsAdminPanel.setPortfolio(p);
+        tradeTransactionPanel1.setPortfolio(p);
     }
     /** This method is called from within the constructor to
      * initialize the form.
