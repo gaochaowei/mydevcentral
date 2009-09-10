@@ -51,6 +51,7 @@ create table stock_position (
 
 create table trade_transaction (
     id integer not null primary key generated always as identity,
+    potfolio integer references portfolio(id),
     transaction_date date,
     transaction_type integer references transaction_type(id),
     stock varchar(10) references stock(symbol),
