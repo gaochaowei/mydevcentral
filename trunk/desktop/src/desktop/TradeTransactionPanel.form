@@ -112,40 +112,79 @@
       <SubComponents>
         <Component class="javax.swing.JTable" name="masterTable">
           <Properties>
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+              <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title resourceKey="masterTable.columnModel.title0"/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title resourceKey="masterTable.columnModel.title1"/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title resourceKey="masterTable.columnModel.title2"/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title resourceKey="masterTable.columnModel.title3"/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title resourceKey="masterTable.columnModel.title4"/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title resourceKey="masterTable.columnModel.title5"/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title resourceKey="masterTable.columnModel.title6"/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title resourceKey="masterTable.columnModel.title7"/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+              </TableColumnModel>
+            </Property>
             <Property name="name" type="java.lang.String" value="masterTable" noResource="true"/>
+            <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+            </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="list" target="masterTable" targetPath="elements" updateStrategy="0" immediately="false">
+            <BindingProperty name="elements" source="list" target="masterTable" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${id}">
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN" value="0"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
               </Subbinding>
               <Subbinding sourcePath="${transactionDate}">
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN" value="1"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
               </Subbinding>
               <Subbinding sourcePath="${transactionType}">
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN" value="2"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
               </Subbinding>
-              <Subbinding sourcePath="${stock}">
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN" value="3"/>
+              <Subbinding sourcePath="${stock.symbol}">
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${quantity}">
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN" value="4"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
               </Subbinding>
               <Subbinding sourcePath="${price}">
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN" value="5"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Double.class"/>
               </Subbinding>
               <Subbinding sourcePath="${comission}">
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN" value="6"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Double.class"/>
               </Subbinding>
               <Subbinding sourcePath="${remark}">
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN" value="7"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
             </BindingProperty>

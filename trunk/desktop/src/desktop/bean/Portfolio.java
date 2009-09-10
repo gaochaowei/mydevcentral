@@ -43,6 +43,8 @@ public class Portfolio implements Serializable {
     private String remark;
     @OneToMany(mappedBy = "portfolio")
     private List<StockPosition> stockPositionList;
+    @OneToMany(mappedBy = "portfolio")
+    private List<TradeTransaction> tradeTransactionList;
 
     public Portfolio() {
         stockPositionList = new java.util.ArrayList<StockPosition>();
@@ -93,6 +95,14 @@ public class Portfolio implements Serializable {
 
     public void setStockPositionList(List<StockPosition> stockPositionList) {
         this.stockPositionList = stockPositionList;
+    }
+
+    public List<TradeTransaction> getTradeTransactionList() {
+        return tradeTransactionList;
+    }
+
+    public void setTradeTransactionList(List<TradeTransaction> tradeTransactionList) {
+        this.tradeTransactionList = tradeTransactionList;
     }
 
     @Override

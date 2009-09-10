@@ -15,6 +15,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -45,8 +47,9 @@ public class TradeTransaction implements Serializable {
     private Date transactionDate;
     @Column(name = "TRANSACTION_TYPE")
     private Integer transactionType;
-    @Column(name = "STOCK")
-    private String stock;
+    @ManyToOne
+    @JoinColumn(name = "STOCK", referencedColumnName = "SYMBOL")
+    private Stock stock;
     @Column(name = "QUANTITY")
     private Integer quantity;
     @Column(name = "PRICE")
@@ -55,6 +58,8 @@ public class TradeTransaction implements Serializable {
     private Double comission;
     @Column(name = "REMARK")
     private String remark;
+    @ManyToOne
+    private Portfolio portfolio;
     @OneToMany(mappedBy = "closeTransaction")
     private List<TradeTransactionClose> tradeTransactionCloseList;
     @OneToMany(mappedBy = "mainTransaction")
@@ -97,12 +102,12 @@ public class TradeTransaction implements Serializable {
         changeSupport.firePropertyChange("transactionType", oldTransactionType, transactionType);
     }
 
-    public String getStock() {
+    public Stock getStock() {
         return stock;
     }
 
-    public void setStock(String stock) {
-        String oldStock = this.stock;
+    public void setStock(Stock stock) {
+        Stock oldStock = this.stock;
         this.stock = stock;
         changeSupport.firePropertyChange("stock", oldStock, stock);
     }
@@ -145,6 +150,16 @@ public class TradeTransaction implements Serializable {
         String oldRemark = this.remark;
         this.remark = remark;
         changeSupport.firePropertyChange("remark", oldRemark, remark);
+    }
+
+    public Portfolio getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(Portfolio portfolio) {
+        Portfolio oldPortfolio = this.portfolio;
+        this.portfolio = portfolio;
+        changeSupport.firePropertyChange("portfolio", oldPortfolio, portfolio);
     }
 
     public List<TradeTransactionClose> getTradeTransactionCloseList() {
