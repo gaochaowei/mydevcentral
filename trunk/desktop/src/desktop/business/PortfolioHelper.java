@@ -20,27 +20,26 @@ import java.util.Map;
 public class PortfolioHelper {
 
     private Portfolio portfolio;
+    private List<StockPosition> openPositionList = new ArrayList<StockPosition>();
+    private List<StockPosition> closePositionList = new ArrayList<StockPosition>();
 
     public PortfolioHelper(Portfolio portfolio) {
-        this.portfolio = portfolio;
+        setPortfolio(portfolio);
+        compute();
     }
 
-    public List<StockPosition> computePosition() {
-        List<StockPosition> openList = new ArrayList<StockPosition>();
-        List<StockPosition> closeList = new ArrayList<StockPosition>();
-        List<TradeTransaction> transactionList = portfolio.getTradeTransactionList();
+    private void compute() {
+        List<TradeTransaction> transactionList = getPortfolio().getTradeTransactionList();
         Map<TradeTransaction, Integer> closeQuantityMap = new HashMap<TradeTransaction, Integer>();
-
         //compute closed amount for each transaction and generate close transaction list
         for (TradeTransaction t : transactionList) {
             int closeQuantity = 0;
             for (TradeTransactionClose c : t.getTradeTransactionCloseByList()) {
                 int subCloseQuantity = c.getQuantity();
                 TradeTransaction tc = c.getCloseTransaction();
-                System.out.println(t.getId() + " -> " + tc.getId() + " -> " + subCloseQuantity);
                 StockPosition p = openPosition(t);
                 closePosition(p, tc, subCloseQuantity);
-                closeList.add(p);
+                getClosePositionList().add(p);
                 closeQuantity += subCloseQuantity;
                 if (closeQuantityMap.containsKey(tc)) {
                     closeQuantityMap.put(tc, closeQuantityMap.get(tc) + subCloseQuantity);
@@ -61,10 +60,9 @@ public class PortfolioHelper {
             if (openQuantity != 0) {
                 StockPosition p = openPosition(t);
                 p.setQuantity(openQuantity);
-                openList.add(p);
+                getOpenPositionList().add(p);
             }
         }
-        return openList;
     }
 
     private void closePosition(StockPosition p, TradeTransaction t, int quantity) {
@@ -82,38 +80,45 @@ public class PortfolioHelper {
         return p;
     }
 
-    private List<TradeTransaction> sortTransactionList() {
-        List<TradeTransaction> transactionList = new ArrayList<TradeTransaction>();
-        for (TradeTransaction t : portfolio.getTradeTransactionList()) {
-            transactionList.add(t);
-        }
-        for (int i = 0; i < transactionList.size(); i++) {
-            TradeTransaction ti = transactionList.get(i);
-            for (int j = 0; j < i; j++) {
-                TradeTransaction tj = transactionList.get(j);
-                if (compare(ti, tj) < 0) {
-                    transactionList.remove(ti);
-                    transactionList.add(j, ti);
-                }
-            }
-
-        }
-        return transactionList;
+    /**
+     * @return the portfolio
+     */
+    public Portfolio getPortfolio() {
+        return portfolio;
     }
 
-    private int compare(TradeTransaction t1, TradeTransaction t2) {
-        if (t1.getTransactionDate().before(t2.getTransactionDate())) {
-            return 1;
-        }
-        if (t1.getTransactionDate().after(t2.getTransactionDate())) {
-            return -1;
-        }
-        if (t1.getTradeTransactionCloseList().contains(t2)) {
-            return 1;
-        }
-        if (t2.getTradeTransactionCloseList().contains(t1)) {
-            return -1;
-        }
-        return t1.getStock().getSymbol().compareTo(t2.getStock().getSymbol());
+    /**
+     * @param portfolio the portfolio to set
+     */
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
+    }
+
+    /**
+     * @return the openPositionList
+     */
+    public List<StockPosition> getOpenPositionList() {
+        return openPositionList;
+    }
+
+    /**
+     * @param openPositionList the openPositionList to set
+     */
+    public void setOpenPositionList(List<StockPosition> openPositionList) {
+        this.openPositionList = openPositionList;
+    }
+
+    /**
+     * @return the closePositionList
+     */
+    public List<StockPosition> getClosePositionList() {
+        return closePositionList;
+    }
+
+    /**
+     * @param closePositionList the closePositionList to set
+     */
+    public void setClosePositionList(List<StockPosition> closePositionList) {
+        this.closePositionList = closePositionList;
     }
 }

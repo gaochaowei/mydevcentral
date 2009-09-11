@@ -23,12 +23,15 @@ public class PortfolioDetailPanel extends javax.swing.JPanel {
     public PortfolioDetailPanel() {
         initComponents();
     }
-    public void setPortfolio(Portfolio p){
-        positionList.clear();
+
+    public void setPortfolio(Portfolio p) {
+        openPositionList.clear();
         PortfolioHelper helper = new PortfolioHelper(p);
-        positionList.addAll(helper.computePosition());
-        tradeTransactionPanel1.setPortfolio(p);
+        openPositionList.addAll(helper.getOpenPositionList());
+        closePositionList.addAll(helper.getClosePositionList());
+        tradeTransactionPanel.setPortfolio(p);
     }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -39,11 +42,14 @@ public class PortfolioDetailPanel extends javax.swing.JPanel {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        positionList = org.jdesktop.observablecollections.ObservableCollections.observableList(new java.util.ArrayList<desktop.bean.StockPosition>());
+        openPositionList = org.jdesktop.observablecollections.ObservableCollections.observableList(new java.util.ArrayList<desktop.bean.StockPosition>());
+        closePositionList = org.jdesktop.observablecollections.ObservableCollections.observableList(new java.util.ArrayList<desktop.bean.StockPosition>());
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        tradeTransactionPanel1 = new desktop.PortfolioTransactionPanel();
+        tradeTransactionPanel = new desktop.PortfolioTransactionPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
 
         setName("Form"); // NOI18N
 
@@ -51,9 +57,10 @@ public class PortfolioDetailPanel extends javax.swing.JPanel {
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
+        jTable1.setAutoCreateRowSorter(true);
         jTable1.setName("jTable1"); // NOI18N
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, positionList, jTable1);
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, openPositionList, jTable1);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${stock.name}"));
         columnBinding.setColumnName("Stock.name");
         columnBinding.setColumnClass(String.class);
@@ -82,8 +89,57 @@ public class PortfolioDetailPanel extends javax.swing.JPanel {
 
         jTabbedPane1.addTab(resourceMap.getString("jScrollPane1.TabConstraints.tabTitle"), jScrollPane1); // NOI18N
 
-        tradeTransactionPanel1.setName("tradeTransactionPanel1"); // NOI18N
-        jTabbedPane1.addTab(resourceMap.getString("tradeTransactionPanel1.TabConstraints.tabTitle"), tradeTransactionPanel1); // NOI18N
+        tradeTransactionPanel.setName("tradeTransactionPanel"); // NOI18N
+        jTabbedPane1.addTab(resourceMap.getString("tradeTransactionPanel.TabConstraints.tabTitle"), tradeTransactionPanel); // NOI18N
+
+        jScrollPane2.setName("jScrollPane2"); // NOI18N
+
+        jTable2.setAutoCreateRowSorter(true);
+        jTable2.setName("jTable2"); // NOI18N
+
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, closePositionList, jTable2);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${closeDate}"));
+        columnBinding.setColumnName("Close Date");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${stock.name}"));
+        columnBinding.setColumnName("Stock.name");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${quantity}"));
+        columnBinding.setColumnName("Quantity");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${startDate}"));
+        columnBinding.setColumnName("Start Date");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${startPrice}"));
+        columnBinding.setColumnName("Start Price");
+        columnBinding.setColumnClass(Double.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${closePrice}"));
+        columnBinding.setColumnName("Close Price");
+        columnBinding.setColumnClass(Double.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${(closePrice-startPrice)*quantity}"));
+        columnBinding.setColumnName("(close Price-start Price)*quantity");
+        columnBinding.setColumnClass(Double.class);
+        columnBinding.setEditable(false);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        jScrollPane2.setViewportView(jTable2);
+        jTable2.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTable2.columnModel.title0")); // NOI18N
+        jTable2.getColumnModel().getColumn(0).setCellRenderer(new desktop.swing.DateRenderer());
+        jTable2.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable2.columnModel.title1")); // NOI18N
+        jTable2.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTable2.columnModel.title2")); // NOI18N
+        jTable2.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable2.columnModel.title5")); // NOI18N
+        jTable2.getColumnModel().getColumn(3).setCellRenderer(new desktop.swing.DateRenderer());
+        jTable2.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTable2.columnModel.title3")); // NOI18N
+        jTable2.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable2.columnModel.title4")); // NOI18N
+        jTable2.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTable2.columnModel.title6")); // NOI18N
+
+        jTabbedPane1.addTab(resourceMap.getString("jScrollPane2.TabConstraints.tabTitle"), jScrollPane2); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -99,11 +155,14 @@ public class PortfolioDetailPanel extends javax.swing.JPanel {
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private java.util.List<desktop.bean.StockPosition> closePositionList;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    private java.util.List<desktop.bean.StockPosition> positionList;
-    private desktop.PortfolioTransactionPanel tradeTransactionPanel1;
+    private javax.swing.JTable jTable2;
+    private java.util.List<desktop.bean.StockPosition> openPositionList;
+    private desktop.PortfolioTransactionPanel tradeTransactionPanel;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }
