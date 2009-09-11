@@ -8,10 +8,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class StockPosition implements Serializable {
+
+    private Stock stock;
     private Integer quantity;
     private Double startPrice;
     private Date startDate;
-    private Stock stock;
+    private Date closeDate;
+    private Double closePrice;
 
     /**
      * @return the quantity
@@ -68,5 +71,32 @@ public class StockPosition implements Serializable {
     public void setStock(Stock stock) {
         this.stock = stock;
     }
-    
+
+    /**
+     * @return the closeDate
+     */
+    public Date getCloseDate() {
+        return closeDate;
+    }
+
+    /**
+     * @param closeDate the closeDate to set
+     */
+    public void setCloseDate(Date closeDate) {
+        this.closeDate = closeDate;
+    }
+
+    /**
+     * @return the closePrice
+     */
+    public Double getClosePrice() {
+        return closePrice;
+    }
+
+    /**
+     * @param closePrice the closePrice to set
+     */
+    public void setClosePrice(Double closePrice) {
+        this.closePrice = closePrice;
+    }
 }

@@ -7,8 +7,11 @@ package desktop.business;
 import desktop.bean.Portfolio;
 import desktop.bean.StockPosition;
 import desktop.bean.TradeTransaction;
+import desktop.bean.TradeTransactionClose;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -16,24 +19,67 @@ import java.util.List;
  */
 public class PortfolioHelper {
 
-    Portfolio portfolio;
+    private Portfolio portfolio;
 
     public PortfolioHelper(Portfolio portfolio) {
         this.portfolio = portfolio;
     }
 
     public List<StockPosition> computePosition() {
-        List<StockPosition> positionList = new ArrayList<StockPosition>();
-        List<TradeTransaction> transactionList = sortTransactionList();
+        List<StockPosition> openList = new ArrayList<StockPosition>();
+        List<StockPosition> closeList = new ArrayList<StockPosition>();
+        List<TradeTransaction> transactionList = portfolio.getTradeTransactionList();
+        Map<TradeTransaction, Integer> closeQuantityMap = new HashMap<TradeTransaction, Integer>();
+
+        //compute closed amount for each transaction and generate close transaction list
         for (TradeTransaction t : transactionList) {
-            StockPosition p = new StockPosition();
-            p.setQuantity(t.getQuantity());
-            p.setStock(t.getStock());
-            p.setStartPrice(t.getPrice());
-            p.setStartDate(t.getTransactionDate());
-            positionList.add(p);
+            int closeQuantity = 0;
+            for (TradeTransactionClose c : t.getTradeTransactionCloseByList()) {
+                int subCloseQuantity = c.getQuantity();
+                TradeTransaction tc = c.getCloseTransaction();
+                System.out.println(t.getId() + " -> " + tc.getId() + " -> " + subCloseQuantity);
+                StockPosition p = openPosition(t);
+                closePosition(p, tc, subCloseQuantity);
+                closeList.add(p);
+                closeQuantity += subCloseQuantity;
+                if (closeQuantityMap.containsKey(tc)) {
+                    closeQuantityMap.put(tc, closeQuantityMap.get(tc) + subCloseQuantity);
+                } else {
+                    closeQuantityMap.put(tc, subCloseQuantity);
+                }
+            }
+            if (closeQuantityMap.containsKey(t)) {
+                closeQuantityMap.put(t, closeQuantityMap.get(t) + closeQuantity);
+            } else {
+                closeQuantityMap.put(t, closeQuantity);
+            }
         }
-        return positionList;
+        //generate the open position after transaction close
+        for (TradeTransaction t : transactionList) {
+            int closeQuantity = closeQuantityMap.containsKey(t) ? closeQuantityMap.get(t) : 0;
+            int openQuantity = t.getQuantity() - closeQuantity;
+            if (openQuantity != 0) {
+                StockPosition p = openPosition(t);
+                p.setQuantity(openQuantity);
+                openList.add(p);
+            }
+        }
+        return openList;
+    }
+
+    private void closePosition(StockPosition p, TradeTransaction t, int quantity) {
+        p.setCloseDate(t.getTransactionDate());
+        p.setClosePrice(t.getPrice());
+        p.setQuantity(quantity);
+    }
+
+    private StockPosition openPosition(TradeTransaction t) {
+        StockPosition p = new StockPosition();
+        p.setStock(t.getStock());
+        p.setQuantity(t.getQuantity());
+        p.setStartPrice(t.getPrice());
+        p.setStartDate(t.getTransactionDate());
+        return p;
     }
 
     private List<TradeTransaction> sortTransactionList() {
