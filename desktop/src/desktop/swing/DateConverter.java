@@ -14,8 +14,6 @@ import org.jdesktop.beansbinding.Converter;
  */
 public class DateConverter extends Converter {
 
-    public static DateConverter instance = new DateConverter();
-
     public Object convertForward(Object date) {
         System.err.println("DateConverter.convertForward...."+date);
         System.err.println("----->"+CommonUtils.format((Date)date));

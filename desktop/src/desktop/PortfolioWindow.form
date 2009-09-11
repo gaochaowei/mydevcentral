@@ -101,7 +101,7 @@
             </DimensionLayout>
           </Layout>
         </Container>
-        <Component class="desktop.PortfolioAdminPanel" name="portfolioAdminPanel1">
+        <Component class="desktop.PortfolioPanel" name="portfolioAdminPanel1">
           <Properties>
             <Property name="name" type="java.lang.String" value="portfolioAdminPanel1" noResource="true"/>
           </Properties>

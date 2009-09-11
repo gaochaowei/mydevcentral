@@ -4,7 +4,7 @@
  */
 
 /*
- * PortfolioAdminPanel.java
+ * PortfolioPanel.java
  *
  * Created on Sep 9, 2009, 8:59:39 AM
  */
@@ -23,9 +23,9 @@ import javax.swing.JPanel;
  *
  * @author Gao.chao.wei
  */
-public class PortfolioAdminPanel extends JPanel {
+public class PortfolioPanel extends JPanel {
     
-    public PortfolioAdminPanel() {
+    public PortfolioPanel() {
         initComponents();
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
@@ -42,7 +42,7 @@ public class PortfolioAdminPanel extends JPanel {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(desktop.DesktopApp.class).getContext().getResourceMap(PortfolioAdminPanel.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(desktop.DesktopApp.class).getContext().getResourceMap(PortfolioPanel.class);
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory(resourceMap.getString("entityManager.persistenceUnit")).createEntityManager(); // NOI18N
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(resourceMap.getString("query.query")); // NOI18N
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
@@ -186,16 +186,16 @@ public class PortfolioAdminPanel extends JPanel {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == saveButton) {
-                PortfolioAdminPanel.this.saveButtonActionPerformed(evt);
+                PortfolioPanel.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                PortfolioAdminPanel.this.refreshButtonActionPerformed(evt);
+                PortfolioPanel.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newButton) {
-                PortfolioAdminPanel.this.newButtonActionPerformed(evt);
+                PortfolioPanel.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                PortfolioAdminPanel.this.deleteButtonActionPerformed(evt);
+                PortfolioPanel.this.deleteButtonActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -271,7 +271,7 @@ public class PortfolioAdminPanel extends JPanel {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new PortfolioAdminPanel());
+                frame.setContentPane(new PortfolioPanel());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);

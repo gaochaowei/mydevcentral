@@ -27,6 +27,8 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;desktop.bean.TradeTransaction&gt;"/>
       </AuxValues>
     </Component>
+    <Component class="desktop.swing.DateConverter" name="dateConverter1">
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="name" type="java.lang.String" value="Form" noResource="true"/>
@@ -122,8 +124,12 @@
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title resourceKey="masterTable.columnModel.title1"/>
-                  <Editor/>
-                  <Renderer/>
+                  <Editor editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                    <Connection code="new desktop.swing.DateEditor()" type="code"/>
+                  </Editor>
+                  <Renderer editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                    <Connection code="new desktop.swing.DateRenderer()" type="code"/>
+                  </Renderer>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title resourceKey="masterTable.columnModel.title2"/>
