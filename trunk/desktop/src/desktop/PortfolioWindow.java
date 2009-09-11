@@ -28,7 +28,7 @@ public class PortfolioWindow extends javax.swing.JInternalFrame {
     }
 
     private void addPortfolio(Portfolio p){
-        StockPositionPanel pp = new StockPositionPanel();
+        PortfolioDetailPanel pp = new PortfolioDetailPanel();
         pp.setPortfolio(p);
         jTabbedPane1.addTab(p.getName(), pp); // NOI18N
     }
@@ -48,7 +48,7 @@ public class PortfolioWindow extends javax.swing.JInternalFrame {
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : query.getResultList();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
-        portfolioAdminPanel1 = new desktop.PortfolioAdminPanel();
+        portfolioAdminPanel1 = new desktop.PortfolioPanel();
 
         setClosable(true);
         setIconifiable(true);
@@ -98,7 +98,7 @@ public class PortfolioWindow extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private java.util.List<desktop.bean.Portfolio> list;
-    private desktop.PortfolioAdminPanel portfolioAdminPanel1;
+    private desktop.PortfolioPanel portfolioAdminPanel1;
     private javax.persistence.Query query;
     // End of variables declaration//GEN-END:variables
 

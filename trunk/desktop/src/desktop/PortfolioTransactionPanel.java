@@ -4,7 +4,7 @@
  */
 
 /*
- * TradeTransactionPanel.java
+ * PortfolioTransactionPanel.java
  *
  * Created on Sep 10, 2009, 5:08:11 PM
  */
@@ -15,6 +15,7 @@ import desktop.bean.Portfolio;
 import desktop.bean.Stock;
 import desktop.bean.TradeTransaction;
 import desktop.bean.TradeTransactionClosePK;
+import desktop.swing.DateRenderer;
 import java.awt.EventQueue;
 import java.beans.Beans;
 import java.util.ArrayList;
@@ -30,9 +31,9 @@ import javax.swing.JPanel;
  *
  * @author Gao.chao.wei
  */
-public class TradeTransactionPanel extends JPanel {
+public class PortfolioTransactionPanel extends JPanel {
     
-    public TradeTransactionPanel() {
+    public PortfolioTransactionPanel() {
         initComponents();
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
@@ -60,10 +61,11 @@ public class TradeTransactionPanel extends JPanel {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(desktop.DesktopApp.class).getContext().getResourceMap(TradeTransactionPanel.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(desktop.DesktopApp.class).getContext().getResourceMap(PortfolioTransactionPanel.class);
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory(resourceMap.getString("entityManager.persistenceUnit")).createEntityManager(); // NOI18N
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(resourceMap.getString("query.query")); // NOI18N
         list = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<desktop.bean.TradeTransaction>());
+        dateConverter1 = new desktop.swing.DateConverter();
         masterScrollPane = new javax.swing.JScrollPane();
         masterTable = new javax.swing.JTable();
         newButton = new javax.swing.JButton();
@@ -114,6 +116,8 @@ public class TradeTransactionPanel extends JPanel {
         masterScrollPane.setViewportView(masterTable);
         masterTable.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("masterTable.columnModel.title0")); // NOI18N
         masterTable.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("masterTable.columnModel.title1")); // NOI18N
+        masterTable.getColumnModel().getColumn(1).setCellEditor(new desktop.swing.DateEditor());
+        masterTable.getColumnModel().getColumn(1).setCellRenderer(new desktop.swing.DateRenderer());
         masterTable.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("masterTable.columnModel.title2")); // NOI18N
         masterTable.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("masterTable.columnModel.title3")); // NOI18N
         masterTable.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("masterTable.columnModel.title4")); // NOI18N
@@ -237,22 +241,22 @@ public class TradeTransactionPanel extends JPanel {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == newButton) {
-                TradeTransactionPanel.this.newButtonActionPerformed(evt);
+                PortfolioTransactionPanel.this.newButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteButton) {
-                TradeTransactionPanel.this.deleteButtonActionPerformed(evt);
+                PortfolioTransactionPanel.this.deleteButtonActionPerformed(evt);
             }
             else if (evt.getSource() == saveButton) {
-                TradeTransactionPanel.this.saveButtonActionPerformed(evt);
+                PortfolioTransactionPanel.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
-                TradeTransactionPanel.this.refreshButtonActionPerformed(evt);
+                PortfolioTransactionPanel.this.refreshButtonActionPerformed(evt);
             }
             else if (evt.getSource() == deleteDetailButton) {
-                TradeTransactionPanel.this.deleteDetailButtonActionPerformed(evt);
+                PortfolioTransactionPanel.this.deleteDetailButtonActionPerformed(evt);
             }
             else if (evt.getSource() == newDetailButton) {
-                TradeTransactionPanel.this.newDetailButtonActionPerformed(evt);
+                PortfolioTransactionPanel.this.newDetailButtonActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -351,6 +355,7 @@ public class TradeTransactionPanel extends JPanel {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private desktop.swing.DateConverter dateConverter1;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton deleteDetailButton;
     private javax.swing.JScrollPane detailScrollPane;
@@ -371,7 +376,7 @@ public class TradeTransactionPanel extends JPanel {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.setContentPane(new TradeTransactionPanel());
+                frame.setContentPane(new PortfolioTransactionPanel());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);

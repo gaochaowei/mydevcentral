@@ -4,7 +4,7 @@
  */
 
 /*
- * StockPositionPanel.java
+ * PortfolioDetailPanel.java
  *
  * Created on Sep 8, 2009, 3:18:12 PM
  */
@@ -16,16 +16,15 @@ import desktop.bean.Portfolio;
  *
  * @author Gao.chao.wei
  */
-public class StockPositionPanel extends javax.swing.JPanel {
+public class PortfolioDetailPanel extends javax.swing.JPanel {
 
-    /** Creates new form StockPositionPanel */
-    public StockPositionPanel() {
+    /** Creates new form PortfolioDetailPanel */
+    public PortfolioDetailPanel() {
         initComponents();
     }
     public void setPortfolio(Portfolio p){
         positionList.clear();
         positionList.addAll(p.getStockPositionList());
-        stockPositionsAdminPanel.setPortfolio(p);
         tradeTransactionPanel1.setPortfolio(p);
     }
     /** This method is called from within the constructor to
@@ -39,14 +38,13 @@ public class StockPositionPanel extends javax.swing.JPanel {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("desktopPU").createEntityManager();
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(desktop.DesktopApp.class).getContext().getResourceMap(StockPositionPanel.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(desktop.DesktopApp.class).getContext().getResourceMap(PortfolioDetailPanel.class);
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(resourceMap.getString("query.query")); // NOI18N
         positionList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        stockPositionsAdminPanel = new desktop.StockPositionsAdminPanel();
-        tradeTransactionPanel1 = new desktop.TradeTransactionPanel();
+        tradeTransactionPanel1 = new desktop.PortfolioTransactionPanel();
 
         setName("Form"); // NOI18N
 
@@ -88,9 +86,6 @@ public class StockPositionPanel extends javax.swing.JPanel {
 
         jTabbedPane1.addTab(resourceMap.getString("jScrollPane1.TabConstraints.tabTitle"), jScrollPane1); // NOI18N
 
-        stockPositionsAdminPanel.setName("stockPositionsAdminPanel"); // NOI18N
-        jTabbedPane1.addTab(resourceMap.getString("stockPositionsAdminPanel.TabConstraints.tabTitle"), stockPositionsAdminPanel); // NOI18N
-
         tradeTransactionPanel1.setName("tradeTransactionPanel1"); // NOI18N
         jTabbedPane1.addTab(resourceMap.getString("tradeTransactionPanel1.TabConstraints.tabTitle"), tradeTransactionPanel1); // NOI18N
 
@@ -114,8 +109,7 @@ public class StockPositionPanel extends javax.swing.JPanel {
     private javax.swing.JTable jTable1;
     private java.util.List<desktop.bean.StockPosition> positionList;
     private javax.persistence.Query query;
-    private desktop.StockPositionsAdminPanel stockPositionsAdminPanel;
-    private desktop.TradeTransactionPanel tradeTransactionPanel1;
+    private desktop.PortfolioTransactionPanel tradeTransactionPanel1;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

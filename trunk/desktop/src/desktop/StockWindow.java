@@ -189,8 +189,9 @@ public class StockWindow extends javax.swing.JInternalFrame {
         jTable1.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTable1.columnModel.title0")); // NOI18N
         jTable1.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable1.columnModel.title1")); // NOI18N
         jTable1.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTable1.columnModel.title2")); // NOI18N
+        jTable1.getColumnModel().getColumn(2).setCellRenderer(new desktop.swing.DateRenderer());
         jTable1.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable1.columnModel.title3")); // NOI18N
-        jTable1.getColumnModel().getColumn(3).setCellRenderer(desktop.swing.DateRenderer.instance);
+        jTable1.getColumnModel().getColumn(3).setCellRenderer(new desktop.swing.DateRenderer());
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

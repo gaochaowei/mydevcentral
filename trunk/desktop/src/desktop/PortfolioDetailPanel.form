@@ -68,7 +68,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Position">
+              <JTabbedPaneConstraints tabName="Positions">
                 <Property name="tabTitle" type="java.lang.String" resourceKey="jScrollPane1.TabConstraints.tabTitle"/>
               </JTabbedPaneConstraints>
             </Constraint>
@@ -139,25 +139,13 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="desktop.StockPositionsAdminPanel" name="stockPositionsAdminPanel">
-          <Properties>
-            <Property name="name" type="java.lang.String" value="stockPositionsAdminPanel" noResource="true"/>
-          </Properties>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Edit">
-                <Property name="tabTitle" type="java.lang.String" resourceKey="stockPositionsAdminPanel.TabConstraints.tabTitle"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-        </Component>
-        <Component class="desktop.TradeTransactionPanel" name="tradeTransactionPanel1">
+        <Component class="desktop.PortfolioTransactionPanel" name="tradeTransactionPanel1">
           <Properties>
             <Property name="name" type="java.lang.String" value="tradeTransactionPanel1" noResource="true"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Transaction">
+              <JTabbedPaneConstraints tabName="Transactions">
                 <Property name="tabTitle" type="java.lang.String" resourceKey="tradeTransactionPanel1.TabConstraints.tabTitle"/>
               </JTabbedPaneConstraints>
             </Constraint>
