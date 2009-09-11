@@ -42,12 +42,9 @@ public class Portfolio implements Serializable {
     @Column(name = "REMARK")
     private String remark;
     @OneToMany(mappedBy = "portfolio")
-    private List<StockPosition> stockPositionList;
-    @OneToMany(mappedBy = "portfolio")
     private List<TradeTransaction> tradeTransactionList;
 
     public Portfolio() {
-        stockPositionList = new java.util.ArrayList<StockPosition>();
     }
 
     public Portfolio(Integer id) {
@@ -87,14 +84,6 @@ public class Portfolio implements Serializable {
         String oldRemark = this.remark;
         this.remark = remark;
         changeSupport.firePropertyChange("remark", oldRemark, remark);
-    }
-
-    public List<StockPosition> getStockPositionList() {
-        return stockPositionList;
-    }
-
-    public void setStockPositionList(List<StockPosition> stockPositionList) {
-        this.stockPositionList = stockPositionList;
     }
 
     public List<TradeTransaction> getTradeTransactionList() {

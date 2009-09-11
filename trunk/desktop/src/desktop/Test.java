@@ -43,19 +43,16 @@ public class Test {
         p.setId(1);
         p.setName("Test Portfolio");
         p.setRemark("this is a testing portfolio");
-        p.setStockPositionList(getStockPositionList());
         return p;
     }
 
     public static List<StockPosition> getStockPositionList(){
         List<StockPosition> list = new ArrayList<StockPosition>();
         StockPosition p = new StockPosition();
-        p.setId(1);
         p.setStock(getStock());
-        p.setBuyDate(CommonUtils.parse("18/03/2009"));
+        p.setStartDate(CommonUtils.parse("18/03/2009"));
         p.setQuantity(1000);
-        p.setPricePaid(7.36);
-        p.setComission(30.0);
+        p.setStartPrice(7.36);
         list.add(p);
         return list;
     }
