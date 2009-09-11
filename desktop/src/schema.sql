@@ -1,6 +1,5 @@
 drop table trade_transaction_close;
 drop table trade_transaction;
-drop table stock_position;
 drop table account;
 drop table transaction_type;
 drop table price;
@@ -39,15 +38,6 @@ create table portfolio (
     id integer not null primary key generated always as identity,
     name varchar(30),
     remark varchar(100));
-
-create table stock_position (
-    id integer not null primary key generated always as identity,
-    portfolio integer references portfolio(id),
-    stock varchar(10) references stock(symbol),
-    quantity integer,
-    price_paid double,
-    buy_date date,
-    comission double);
 
 create table trade_transaction (
     id integer not null primary key generated always as identity,
