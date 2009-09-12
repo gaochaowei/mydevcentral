@@ -47,9 +47,9 @@ public class PortfolioDetailPanel extends javax.swing.JPanel {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        tradeTransactionPanel = new desktop.PortfolioTransactionPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        tradeTransactionPanel = new desktop.PortfolioTransactionPanel();
 
         setName("Form"); // NOI18N
 
@@ -88,9 +88,6 @@ public class PortfolioDetailPanel extends javax.swing.JPanel {
         jTable1.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable1.columnModel.title3")); // NOI18N
 
         jTabbedPane1.addTab(resourceMap.getString("jScrollPane1.TabConstraints.tabTitle"), jScrollPane1); // NOI18N
-
-        tradeTransactionPanel.setName("tradeTransactionPanel"); // NOI18N
-        jTabbedPane1.addTab(resourceMap.getString("tradeTransactionPanel.TabConstraints.tabTitle"), tradeTransactionPanel); // NOI18N
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
@@ -140,6 +137,9 @@ public class PortfolioDetailPanel extends javax.swing.JPanel {
         jTable2.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTable2.columnModel.title6")); // NOI18N
 
         jTabbedPane1.addTab(resourceMap.getString("jScrollPane2.TabConstraints.tabTitle"), jScrollPane2); // NOI18N
+
+        tradeTransactionPanel.setName("tradeTransactionPanel"); // NOI18N
+        jTabbedPane1.addTab(resourceMap.getString("tradeTransactionPanel.TabConstraints.tabTitle"), tradeTransactionPanel); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

@@ -30,17 +30,17 @@ public class PriceChartWindow extends javax.swing.JInternalFrame {
     public PriceChartWindow() {
         super();
         initComponents();
-        OHLCSeries data = new OHLCSeries("D05.SI");
+        OHLCSeries data = new OHLCSeries("DBS Group");
         for (Price p : list) {
             RegularTimePeriod t = new Day(p.getPricePK().getPriceDate());
             data.add(t, p.getPriceOpen(), p.getPriceHigh(), p.getPriceLow(), p.getPriceClose());
-            if (data.getItemCount() > 10) {
+            if (data.getItemCount() > 100) {
                 break;
             }
         }
         OHLCSeriesCollection ds = new OHLCSeriesCollection();
         ds.addSeries(data);
-        org.jfree.chart.JFreeChart c = ChartFactory.createCandlestickChart("D05.SI", "Date", "Price", ds, false);
+        org.jfree.chart.JFreeChart c = ChartFactory.createCandlestickChart("DBS Group", "Date", "Price ($)", ds, false);
         XYPlot xyplot = (XYPlot) c.getPlot();
         xyplot.setDomainPannable(true);
         NumberAxis numberaxis = (NumberAxis) xyplot.getRangeAxis();

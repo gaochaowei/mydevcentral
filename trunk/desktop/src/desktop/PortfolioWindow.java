@@ -30,7 +30,8 @@ public class PortfolioWindow extends javax.swing.JInternalFrame {
     private void addPortfolio(Portfolio p){
         PortfolioDetailPanel pp = new PortfolioDetailPanel();
         pp.setPortfolio(p);
-        jTabbedPane1.addTab(p.getName(), pp); // NOI18N
+//        jTabbedPane1.addTab(p.getName(), pp); // NOI18N
+        jTabbedPane1.insertTab(p.getName(), null, pp, p.getName(), jTabbedPane1.getTabCount()-1);
     }
     
     /** This method is called from within the constructor to
@@ -47,8 +48,7 @@ public class PortfolioWindow extends javax.swing.JInternalFrame {
         query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery(resourceMap.getString("query.query")); // NOI18N
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : query.getResultList();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel2 = new javax.swing.JPanel();
-        portfolioAdminPanel1 = new desktop.PortfolioPanel();
+        portfolioPanel = new desktop.PortfolioPanel();
 
         setClosable(true);
         setIconifiable(true);
@@ -57,26 +57,10 @@ public class PortfolioWindow extends javax.swing.JInternalFrame {
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
-        jTabbedPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jTabbedPane1.border.title"))); // NOI18N
         jTabbedPane1.setName("jTabbedPane1"); // NOI18N
 
-        jPanel2.setName("jPanel2"); // NOI18N
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 565, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 293, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab(resourceMap.getString("jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
-
-        portfolioAdminPanel1.setName("portfolioAdminPanel1"); // NOI18N
-        jTabbedPane1.addTab(resourceMap.getString("portfolioAdminPanel1.TabConstraints.tabTitle"), portfolioAdminPanel1); // NOI18N
+        portfolioPanel.setName("portfolioPanel"); // NOI18N
+        jTabbedPane1.addTab(resourceMap.getString("portfolioPanel.TabConstraints.tabTitle"), portfolioPanel); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -86,7 +70,7 @@ public class PortfolioWindow extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
         );
 
         pack();
@@ -95,10 +79,9 @@ public class PortfolioWindow extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.persistence.EntityManager entityManager;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private java.util.List<desktop.bean.Portfolio> list;
-    private desktop.PortfolioPanel portfolioAdminPanel1;
+    private desktop.PortfolioPanel portfolioPanel;
     private javax.persistence.Query query;
     // End of variables declaration//GEN-END:variables
 
