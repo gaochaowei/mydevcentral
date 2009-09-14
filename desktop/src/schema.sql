@@ -50,8 +50,8 @@ create table trade_transaction (
     comission double,
     remark varchar(100));
 
-create table trade_transaction_close (
-    main_transaction integer references trade_transaction(id),
+create table trade_transaction_relation (
+    open_transaction integer references trade_transaction(id),
     close_transaction integer references trade_transaction(id),
     quantity integer,
-    primary key(main_transaction,close_transaction));
+    primary key(open_transaction,close_transaction));

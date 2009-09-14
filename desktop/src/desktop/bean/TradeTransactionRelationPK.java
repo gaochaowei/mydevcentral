@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package desktop.bean;
 
 import java.io.Serializable;
@@ -15,28 +14,29 @@ import javax.persistence.Embeddable;
  * @author Gao.chao.wei
  */
 @Embeddable
-public class TradeTransactionClosePK implements Serializable {
+public class TradeTransactionRelationPK implements Serializable {
+
     @Basic(optional = false)
-    @Column(name = "MAIN_TRANSACTION")
-    private int mainTransaction;
+    @Column(name = "OPEN_TRANSACTION")
+    private int openTransaction;
     @Basic(optional = false)
     @Column(name = "CLOSE_TRANSACTION")
     private int closeTransaction;
 
-    public TradeTransactionClosePK() {
+    public TradeTransactionRelationPK() {
     }
 
-    public TradeTransactionClosePK(int mainTransaction, int closeTransaction) {
-        this.mainTransaction = mainTransaction;
+    public TradeTransactionRelationPK(int openTransaction, int closeTransaction) {
+        this.openTransaction = openTransaction;
         this.closeTransaction = closeTransaction;
     }
 
-    public int getMainTransaction() {
-        return mainTransaction;
+    public int getOpenTransaction() {
+        return openTransaction;
     }
 
-    public void setMainTransaction(int mainTransaction) {
-        this.mainTransaction = mainTransaction;
+    public void setOpenTransaction(int openTransaction) {
+        this.openTransaction = openTransaction;
     }
 
     public int getCloseTransaction() {
@@ -50,7 +50,7 @@ public class TradeTransactionClosePK implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) mainTransaction;
+        hash += (int) openTransaction;
         hash += (int) closeTransaction;
         return hash;
     }
@@ -58,11 +58,11 @@ public class TradeTransactionClosePK implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TradeTransactionClosePK)) {
+        if (!(object instanceof TradeTransactionRelationPK)) {
             return false;
         }
-        TradeTransactionClosePK other = (TradeTransactionClosePK) object;
-        if (this.mainTransaction != other.mainTransaction) {
+        TradeTransactionRelationPK other = (TradeTransactionRelationPK) object;
+        if (this.openTransaction != other.openTransaction) {
             return false;
         }
         if (this.closeTransaction != other.closeTransaction) {
@@ -73,7 +73,6 @@ public class TradeTransactionClosePK implements Serializable {
 
     @Override
     public String toString() {
-        return "desktop.TradeTransactionClosePK[mainTransaction=" + mainTransaction + ", closeTransaction=" + closeTransaction + "]";
+        return "desktop.TradeTransactionRelationPK[openTransaction=" + openTransaction + ", closeTransaction=" + closeTransaction + "]";
     }
-
 }

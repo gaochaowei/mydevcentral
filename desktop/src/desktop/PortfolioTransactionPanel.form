@@ -253,11 +253,11 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="masterTable" sourcePath="${selectedElement.tradeTransactionCloseList}" target="detailTable" targetPath="elements" updateStrategy="0" immediately="true">
+            <BindingProperty name="elements" source="masterTable" sourcePath="${selectedElement.openTradeTransactionList}" target="detailTable" targetPath="elements" updateStrategy="0" immediately="true">
               <Property name="incompletePathValue" type="java.util.List" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                 <Connection code="java.util.Collections.emptyList()" type="code"/>
               </Property>
-              <Subbinding sourcePath="${tradeTransactionClosePK.closeTransaction}">
+              <Subbinding sourcePath="${id}">
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
               </Subbinding>
               <Subbinding sourcePath="${quantity}">
