@@ -60,10 +60,10 @@ public class TradeTransaction implements Serializable {
     private String remark;
     @ManyToOne
     private Portfolio portfolio;
-    @OneToMany(mappedBy = "openTransaction")
-    private List<TradeTransactionRelation> openTradeTransactionList;
     @OneToMany(mappedBy = "closeTransaction")
-    private List<TradeTransactionRelation> closeTradeTransactionList;
+    private List<TradeTransactionRelation> openTradeTransactionRelationList;
+    @OneToMany(mappedBy = "openTransaction")
+    private List<TradeTransactionRelation> closeTradeTransactionRelationList;
 
     public TradeTransaction() {
     }
@@ -162,20 +162,20 @@ public class TradeTransaction implements Serializable {
         changeSupport.firePropertyChange("portfolio", oldPortfolio, portfolio);
     }
 
-    public List<TradeTransactionRelation> getOpenTradeTransactionList() {
-        return openTradeTransactionList;
+    public List<TradeTransactionRelation> getOpenTradeTransactionRelationList() {
+        return openTradeTransactionRelationList;
     }
 
-    public void setOpenTradeTransactionList(List<TradeTransactionRelation> openTradeTransactionList) {
-        this.openTradeTransactionList = openTradeTransactionList;
+    public void setOpenTradeTransactionRelationList(List<TradeTransactionRelation> openTradeTransactionRelationList) {
+        this.openTradeTransactionRelationList = openTradeTransactionRelationList;
     }
 
-    public List<TradeTransactionRelation> getCloseTradeTransactionList() {
-        return closeTradeTransactionList;
+    public List<TradeTransactionRelation> getCloseTradeTransactionRelationList() {
+        return closeTradeTransactionRelationList;
     }
 
-    public void setCloseTradeTransactionList(List<TradeTransactionRelation> closeTradeTransactionList) {
-        this.closeTradeTransactionList = closeTradeTransactionList;
+    public void setCloseTradeTransactionRelationList(List<TradeTransactionRelation> closeTradeTransactionRelationList) {
+        this.closeTradeTransactionRelationList = closeTradeTransactionRelationList;
     }
 
     @Override
