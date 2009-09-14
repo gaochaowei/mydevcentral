@@ -34,9 +34,9 @@ public class PortfolioHelper {
         //compute closed amount for each transaction and generate close transaction list
         for (TradeTransaction t : transactionList) {
             int closeQuantity = 0;
-            for (TradeTransactionRelation c : t.getCloseTradeTransactionRelationList()) {
-                int subCloseQuantity = c.getQuantity();
-                TradeTransaction tc = c.getOpenTransaction();
+            for (TradeTransactionRelation ctr : t.getCloseTradeTransactionRelationList()) {
+                int subCloseQuantity = ctr.getQuantity();
+                TradeTransaction tc = ctr.getCloseTransaction();
                 StockPosition p = openPosition(t);
                 closePosition(p, tc, subCloseQuantity);
                 getClosePositionList().add(p);
