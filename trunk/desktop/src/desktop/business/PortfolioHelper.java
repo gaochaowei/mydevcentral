@@ -7,7 +7,7 @@ package desktop.business;
 import desktop.bean.Portfolio;
 import desktop.bean.StockPosition;
 import desktop.bean.TradeTransaction;
-import desktop.bean.TradeTransactionClose;
+import desktop.bean.TradeTransactionRelation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,9 +34,9 @@ public class PortfolioHelper {
         //compute closed amount for each transaction and generate close transaction list
         for (TradeTransaction t : transactionList) {
             int closeQuantity = 0;
-            for (TradeTransactionClose c : t.getTradeTransactionCloseByList()) {
+            for (TradeTransactionRelation c : t.getCloseTradeTransactionList()) {
                 int subCloseQuantity = c.getQuantity();
-                TradeTransaction tc = c.getCloseTransaction();
+                TradeTransaction tc = c.getOpenTransaction();
                 StockPosition p = openPosition(t);
                 closePosition(p, tc, subCloseQuantity);
                 getClosePositionList().add(p);

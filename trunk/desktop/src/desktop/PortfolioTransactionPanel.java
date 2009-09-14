@@ -8,14 +8,11 @@
  *
  * Created on Sep 10, 2009, 5:08:11 PM
  */
-
 package desktop;
 
 import desktop.bean.Portfolio;
 import desktop.bean.Stock;
-import desktop.bean.TradeTransaction;
-import desktop.bean.TradeTransactionClosePK;
-import desktop.swing.DateRenderer;
+import desktop.bean.TradeTransactionRelationPK;
 import java.awt.EventQueue;
 import java.beans.Beans;
 import java.util.ArrayList;
@@ -32,7 +29,7 @@ import javax.swing.JPanel;
  * @author Gao.chao.wei
  */
 public class PortfolioTransactionPanel extends JPanel {
-    
+
     public PortfolioTransactionPanel() {
         initComponents();
         if (!Beans.isDesignTime()) {
@@ -40,13 +37,14 @@ public class PortfolioTransactionPanel extends JPanel {
         }
     }
     private Portfolio portfolio;
-    
-    public Portfolio getPortfolio(){
+
+    public Portfolio getPortfolio() {
         return portfolio;
     }
 
-    public void setPortfolio(Portfolio portfolio){
+    public void setPortfolio(Portfolio portfolio) {
         this.portfolio = portfolio;
+        System.out.println("..........."+portfolio.getTradeTransactionList());
         list.clear();
         list.addAll(portfolio.getTradeTransactionList());
     }
@@ -141,10 +139,10 @@ public class PortfolioTransactionPanel extends JPanel {
 
         detailTable.setName("detailTable"); // NOI18N
 
-        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.tradeTransactionCloseList}");
+        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.openTradeTransactionList}");
         jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, eLProperty, detailTable);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tradeTransactionClosePK.closeTransaction}"));
-        columnBinding.setColumnName("Trade Transaction Close PK.close Transaction");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${id}"));
+        columnBinding.setColumnName("Id");
         columnBinding.setColumnClass(Integer.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${quantity}"));
         columnBinding.setColumnName("Quantity");
@@ -261,19 +259,20 @@ public class PortfolioTransactionPanel extends JPanel {
         }
     }// </editor-fold>//GEN-END:initComponents
 
-    
     private void deleteDetailButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDetailButtonActionPerformed
         int index = masterTable.getSelectedRow();
         desktop.bean.TradeTransaction T = list.get(masterTable.convertRowIndexToModel(index));
-        Collection<desktop.bean.TradeTransactionClose> ts = T.getTradeTransactionCloseList();
+        Collection<desktop.bean.TradeTransactionRelation> ts = T.getOpenTradeTransactionList();
         int[] selected = detailTable.getSelectedRows();
-        List<desktop.bean.TradeTransactionClose> toRemove = new ArrayList<desktop.bean.TradeTransactionClose>(selected.length);
-        for (int idx=0; idx<selected.length; idx++) {
+        List<desktop.bean.TradeTransactionRelation> toRemove = new ArrayList<desktop.bean.TradeTransactionRelation>(selected.length);
+        for (int idx = 0; idx < selected.length; idx++) {
             selected[idx] = detailTable.convertRowIndexToModel(selected[idx]);
             int count = 0;
-            Iterator<desktop.bean.TradeTransactionClose> iter = ts.iterator();
-            while (count++ < selected[idx]) iter.next();
-            desktop.bean.TradeTransactionClose t = iter.next();
+            Iterator<desktop.bean.TradeTransactionRelation> iter = ts.iterator();
+            while (count++ < selected[idx]) {
+                iter.next();
+            }
+            desktop.bean.TradeTransactionRelation t = iter.next();
             toRemove.add(t);
             entityManager.remove(t);
         }
@@ -285,24 +284,24 @@ public class PortfolioTransactionPanel extends JPanel {
     private void newDetailButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newDetailButtonActionPerformed
         int index = masterTable.getSelectedRow();
         desktop.bean.TradeTransaction T = list.get(masterTable.convertRowIndexToModel(index));
-        Collection<desktop.bean.TradeTransactionClose> ts = T.getTradeTransactionCloseList();
+        Collection<desktop.bean.TradeTransactionRelation> ts = T.getOpenTradeTransactionList();
         if (ts == null) {
-            ts = new LinkedList<desktop.bean.TradeTransactionClose>();
-            T.setTradeTransactionCloseList((List)ts);
+            ts = new LinkedList<desktop.bean.TradeTransactionRelation>();
+            T.setOpenTradeTransactionList((List) ts);
         }
-        desktop.bean.TradeTransactionClose t = new desktop.bean.TradeTransactionClose();
-        TradeTransactionClosePK pk = new TradeTransactionClosePK(T.getId(),T.getId());
-        t.setTradeTransactionClosePK(pk);
+        desktop.bean.TradeTransactionRelation t = new desktop.bean.TradeTransactionRelation();
+        TradeTransactionRelationPK pk = new TradeTransactionRelationPK(T.getId(), T.getId());
+        t.setTradeTransactionRelationPK(pk);
         entityManager.persist(t);
-        t.setCloseTransaction(T);
+        t.setOpenTransaction(T);
         ts.add(t);
         masterTable.clearSelection();
         masterTable.setRowSelectionInterval(index, index);
-        int row = ts.size()-1;
+        int row = ts.size() - 1;
         detailTable.setRowSelectionInterval(row, row);
         detailTable.scrollRectToVisible(detailTable.getCellRect(row, 0, true));
     }//GEN-LAST:event_newDetailButtonActionPerformed
-    
+
     @SuppressWarnings("unchecked")
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         entityManager.getTransaction().rollback();
@@ -318,7 +317,7 @@ public class PortfolioTransactionPanel extends JPanel {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int[] selected = masterTable.getSelectedRows();
         List<desktop.bean.TradeTransaction> toRemove = new ArrayList<desktop.bean.TradeTransaction>(selected.length);
-        for (int idx=0; idx<selected.length; idx++) {
+        for (int idx = 0; idx < selected.length; idx++) {
             desktop.bean.TradeTransaction T = list.get(masterTable.convertRowIndexToModel(selected[idx]));
             toRemove.add(T);
             entityManager.remove(T);
@@ -332,11 +331,11 @@ public class PortfolioTransactionPanel extends JPanel {
         T.setStock(new Stock());
         entityManager.persist(T);
         list.add(T);
-        int row = list.size()-1;
+        int row = list.size() - 1;
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
     }//GEN-LAST:event_newButtonActionPerformed
-    
+
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
             entityManager.getTransaction().commit();
@@ -352,8 +351,6 @@ public class PortfolioTransactionPanel extends JPanel {
             list.addAll(merged);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private desktop.swing.DateConverter dateConverter1;
     private javax.swing.JButton deleteButton;
@@ -371,9 +368,10 @@ public class PortfolioTransactionPanel extends JPanel {
     private javax.swing.JButton saveButton;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
-    
+
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 JFrame frame = new JFrame();
                 frame.setContentPane(new PortfolioTransactionPanel());
@@ -383,5 +381,4 @@ public class PortfolioTransactionPanel extends JPanel {
             }
         });
     }
-
 }

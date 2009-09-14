@@ -9,7 +9,7 @@
     <class>desktop.bean.StockPosition</class>
     <class>desktop.bean.TransactionType</class>
     <class>desktop.bean.TradeTransaction</class>
-    <class>desktop.bean.TradeTransactionClose</class>
+    <class>desktop.bean.TradeTransactionRelation</class>
     <properties>
       <property name="hibernate.connection.username" value="root"/>
       <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.ClientDriver"/>

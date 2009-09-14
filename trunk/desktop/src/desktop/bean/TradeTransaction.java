@@ -60,10 +60,10 @@ public class TradeTransaction implements Serializable {
     private String remark;
     @ManyToOne
     private Portfolio portfolio;
+    @OneToMany(mappedBy = "openTransaction")
+    private List<TradeTransactionRelation> openTradeTransactionList;
     @OneToMany(mappedBy = "closeTransaction")
-    private List<TradeTransactionClose> tradeTransactionCloseList;
-    @OneToMany(mappedBy = "mainTransaction")
-    private List<TradeTransactionClose> tradeTransactionCloseByList;
+    private List<TradeTransactionRelation> closeTradeTransactionList;
 
     public TradeTransaction() {
     }
@@ -162,20 +162,20 @@ public class TradeTransaction implements Serializable {
         changeSupport.firePropertyChange("portfolio", oldPortfolio, portfolio);
     }
 
-    public List<TradeTransactionClose> getTradeTransactionCloseList() {
-        return tradeTransactionCloseList;
+    public List<TradeTransactionRelation> getOpenTradeTransactionList() {
+        return openTradeTransactionList;
     }
 
-    public void setTradeTransactionCloseList(List<TradeTransactionClose> tradeTransactionCloseList) {
-        this.tradeTransactionCloseList = tradeTransactionCloseList;
+    public void setOpenTradeTransactionList(List<TradeTransactionRelation> openTradeTransactionList) {
+        this.openTradeTransactionList = openTradeTransactionList;
     }
 
-    public List<TradeTransactionClose> getTradeTransactionCloseByList() {
-        return tradeTransactionCloseByList;
+    public List<TradeTransactionRelation> getCloseTradeTransactionList() {
+        return closeTradeTransactionList;
     }
 
-    public void setTradeTransactionCloseByList(List<TradeTransactionClose> tradeTransactionCloseByList) {
-        this.tradeTransactionCloseByList = tradeTransactionCloseByList;
+    public void setCloseTradeTransactionList(List<TradeTransactionRelation> closeTradeTransactionList) {
+        this.closeTradeTransactionList = closeTradeTransactionList;
     }
 
     @Override
