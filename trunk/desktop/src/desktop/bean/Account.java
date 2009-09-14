@@ -24,7 +24,7 @@ import javax.persistence.Transient;
  * @author sweet99
  */
 @Entity
-@Table(name = "ACCOUNT")
+@Table(name = "ACCOUNT", catalog = "", schema = "ROOT")
 @NamedQueries({@NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"), @NamedQuery(name = "Account.findById", query = "SELECT a FROM Account a WHERE a.id = :id"), @NamedQuery(name = "Account.findByName", query = "SELECT a FROM Account a WHERE a.name = :name"), @NamedQuery(name = "Account.findByBalance", query = "SELECT a FROM Account a WHERE a.balance = :balance")})
 public class Account implements Serializable {
     @Transient

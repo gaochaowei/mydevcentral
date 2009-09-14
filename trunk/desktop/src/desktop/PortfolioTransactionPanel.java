@@ -139,10 +139,10 @@ public class PortfolioTransactionPanel extends JPanel {
 
         detailTable.setName("detailTable"); // NOI18N
 
-        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.openTradeTransactionList}");
+        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.openTradeTransactionRelationList}");
         jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, eLProperty, detailTable);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${id}"));
-        columnBinding.setColumnName("Id");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${openTransaction.id}"));
+        columnBinding.setColumnName("Open Transaction.id");
         columnBinding.setColumnClass(Integer.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${quantity}"));
         columnBinding.setColumnName("Quantity");
@@ -262,7 +262,7 @@ public class PortfolioTransactionPanel extends JPanel {
     private void deleteDetailButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDetailButtonActionPerformed
         int index = masterTable.getSelectedRow();
         desktop.bean.TradeTransaction T = list.get(masterTable.convertRowIndexToModel(index));
-        Collection<desktop.bean.TradeTransactionRelation> ts = T.getOpenTradeTransactionList();
+        Collection<desktop.bean.TradeTransactionRelation> ts = T.getOpenTradeTransactionRelationList();
         int[] selected = detailTable.getSelectedRows();
         List<desktop.bean.TradeTransactionRelation> toRemove = new ArrayList<desktop.bean.TradeTransactionRelation>(selected.length);
         for (int idx = 0; idx < selected.length; idx++) {
@@ -284,10 +284,10 @@ public class PortfolioTransactionPanel extends JPanel {
     private void newDetailButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newDetailButtonActionPerformed
         int index = masterTable.getSelectedRow();
         desktop.bean.TradeTransaction T = list.get(masterTable.convertRowIndexToModel(index));
-        Collection<desktop.bean.TradeTransactionRelation> ts = T.getOpenTradeTransactionList();
+        Collection<desktop.bean.TradeTransactionRelation> ts = T.getOpenTradeTransactionRelationList();
         if (ts == null) {
             ts = new LinkedList<desktop.bean.TradeTransactionRelation>();
-            T.setOpenTradeTransactionList((List) ts);
+            T.setOpenTradeTransactionRelationList((List) ts);
         }
         desktop.bean.TradeTransactionRelation t = new desktop.bean.TradeTransactionRelation();
         TradeTransactionRelationPK pk = new TradeTransactionRelationPK(T.getId(), T.getId());

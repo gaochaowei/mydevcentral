@@ -33,10 +33,10 @@ public class TradeTransactionRelation implements Serializable {
     protected TradeTransactionRelationPK tradeTransactionRelationPK;
     @Column(name = "QUANTITY")
     private Integer quantity;
-    @JoinColumn(name = "CLOSE_TRANSACTION", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "OPEN_TRANSACTION", referencedColumnName = "ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private TradeTransaction openTransaction;
-    @JoinColumn(name = "OPEN_TRANSACTION", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "CLOSE_TRANSACTION", referencedColumnName = "ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private TradeTransaction closeTransaction;
 
