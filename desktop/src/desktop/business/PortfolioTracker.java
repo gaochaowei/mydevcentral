@@ -9,6 +9,7 @@ import desktop.bean.StockPosition;
 import desktop.bean.TradeTransaction;
 import desktop.bean.TradeTransactionRelation;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,11 +21,26 @@ import java.util.Map;
  */
 public class PortfolioTracker {
 
+    private List<Date> changeDateList = new ArrayList<Date>();
     private Map<Date, List<StockPosition>> positionChangeHistory = new HashMap<Date, List<StockPosition>>();
+    private Map<Date, List<StockPosition>> positionHistory = new HashMap<Date, List<StockPosition>>();
 
     public PortfolioTracker(Portfolio portfolio) {
         for (TradeTransaction tx : portfolio.getTradeTransactionList()) {
             addTradeTransaction(tx);
+        }
+        changeDateList.addAll(positionChangeHistory.keySet());
+        Collections.sort(changeDateList);
+        for (Date date : changeDateList) {
+            List<StockPosition> ps = positionChangeHistory.get(date);
+            for (StockPosition p : ps) {
+                if (p.getCloseTransaction() == null) {
+                    if (!positionHistory.containsKey(date)) {
+                        positionHistory.put(date, new ArrayList<StockPosition>());
+                    }
+                    positionHistory.get(date).add(p);
+                }
+            }
         }
     }
 
