@@ -66,17 +66,14 @@ public class PortfolioHelper {
     }
 
     private void closePosition(StockPosition p, TradeTransaction t, int quantity) {
-        p.setCloseDate(t.getTransactionDate());
-        p.setClosePrice(t.getPrice());
+        p.setCloseTransaction(t);
         p.setQuantity(quantity);
     }
 
     private StockPosition openPosition(TradeTransaction t) {
         StockPosition p = new StockPosition();
-        p.setStock(t.getStock());
+        p.setOpenTransaction(t);
         p.setQuantity(t.getQuantity());
-        p.setStartPrice(t.getPrice());
-        p.setStartDate(t.getTransactionDate());
         return p;
     }
 
