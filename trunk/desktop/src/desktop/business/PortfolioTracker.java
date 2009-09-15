@@ -34,12 +34,7 @@ public class PortfolioTracker {
         for (Date date : changeDateList) {
             List<StockPosition> ps = positionChangeHistory.get(date);
             for (StockPosition p : ps) {
-                if (p.getCloseTransaction() == null) {
-                    if (!positionHistory.containsKey(date)) {
-                        positionHistory.put(date, new ArrayList<StockPosition>());
-                    }
-                    positionHistory.get(date).add(p);
-                }
+                addPosition(positionHistory, p);
             }
         }
     }
@@ -51,7 +46,7 @@ public class PortfolioTracker {
             p.setOpenTransaction(otr.getOpenTransaction());
             p.setCloseTransaction(otr.getCloseTransaction());
             p.setQuantity(otr.getQuantity());
-            addPosition(p);
+            addPosition(positionChangeHistory, p);
             closeQuantity += otr.getQuantity();
         }
         int openQuantity = tx.getQuantity() - closeQuantity;
@@ -59,21 +54,22 @@ public class PortfolioTracker {
             StockPosition p = new StockPosition();
             p.setOpenTransaction(tx);
             p.setQuantity(openQuantity);
+            addPosition(positionChangeHistory, p);
         }
     }
 
-    private void addPosition(StockPosition p) {
+    private void addPosition(Map<Date, List<StockPosition>> map, StockPosition p) {
         if (p.getCloseTransaction() == null) {
-            addPosition(p.getOpenTransaction().getTransactionDate(), p);
+            addPosition(map, p.getOpenTransaction().getTransactionDate(), p);
         } else {
-            addPosition(p.getCloseTransaction().getTransactionDate(), p);
+            addPosition(map, p.getCloseTransaction().getTransactionDate(), p);
         }
     }
 
-    private void addPosition(Date date, StockPosition p) {
-        if (!positionChangeHistory.containsKey(date)) {
-            positionChangeHistory.put(date, new ArrayList<StockPosition>());
+    private void addPosition(Map<Date, List<StockPosition>> map, Date date, StockPosition p) {
+        if (!map.containsKey(date)) {
+            map.put(date, new ArrayList<StockPosition>());
         }
-        positionChangeHistory.get(date).add(p);
+        map.get(date).add(p);
     }
 }
