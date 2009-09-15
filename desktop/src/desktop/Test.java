@@ -49,10 +49,10 @@ public class Test {
     public static List<StockPosition> getStockPositionList(){
         List<StockPosition> list = new ArrayList<StockPosition>();
         StockPosition p = new StockPosition();
-        p.setStock(getStock());
-        p.setStartDate(CommonUtils.parse("18/03/2009"));
-        p.setQuantity(1000);
-        p.setStartPrice(7.36);
+//        p.setStock(getStock());
+//        p.setStartDate(CommonUtils.parse("18/03/2009"));
+//        p.setQuantity(1000);
+//        p.setStartPrice(7.36);
         list.add(p);
         return list;
     }
