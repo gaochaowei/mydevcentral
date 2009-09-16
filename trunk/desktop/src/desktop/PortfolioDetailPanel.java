@@ -11,7 +11,7 @@
 package desktop;
 
 import desktop.bean.Portfolio;
-import desktop.business.PortfolioHelper;
+import desktop.business.PortfolioTracker;
 
 /**
  *
@@ -26,10 +26,12 @@ public class PortfolioDetailPanel extends javax.swing.JPanel {
 
     public void setPortfolio(Portfolio p) {
         openPositionList.clear();
-        PortfolioHelper helper = new PortfolioHelper(p);
-        openPositionList.addAll(helper.getOpenPositionList());
-        closePositionList.addAll(helper.getClosePositionList());
+//        PortfolioHelper helper = new PortfolioHelper(p);
+        PortfolioTracker tracker = new PortfolioTracker(p);
+        openPositionList.addAll(tracker.getOpenPositionList());
+        closePositionList.addAll(tracker.getClosePositionList());
         tradeTransactionPanel.setPortfolio(p);
+        portfolioTrackerPanel1.setPortfolioTracker(tracker);
     }
 
     /** This method is called from within the constructor to
@@ -50,6 +52,7 @@ public class PortfolioDetailPanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         tradeTransactionPanel = new desktop.PortfolioTransactionPanel();
+        portfolioTrackerPanel1 = new desktop.PortfolioTrackerPanel();
 
         setName("Form"); // NOI18N
 
@@ -140,6 +143,21 @@ public class PortfolioDetailPanel extends javax.swing.JPanel {
         tradeTransactionPanel.setName("tradeTransactionPanel"); // NOI18N
         jTabbedPane1.addTab(resourceMap.getString("tradeTransactionPanel.TabConstraints.tabTitle"), tradeTransactionPanel); // NOI18N
 
+        portfolioTrackerPanel1.setName("portfolioTrackerPanel1"); // NOI18N
+
+        javax.swing.GroupLayout portfolioTrackerPanel1Layout = new javax.swing.GroupLayout(portfolioTrackerPanel1);
+        portfolioTrackerPanel1.setLayout(portfolioTrackerPanel1Layout);
+        portfolioTrackerPanel1Layout.setHorizontalGroup(
+            portfolioTrackerPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 508, Short.MAX_VALUE)
+        );
+        portfolioTrackerPanel1Layout.setVerticalGroup(
+            portfolioTrackerPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 332, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab(resourceMap.getString("portfolioTrackerPanel1.TabConstraints.tabTitle"), portfolioTrackerPanel1); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -161,6 +179,7 @@ public class PortfolioDetailPanel extends javax.swing.JPanel {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private java.util.List<desktop.bean.StockPosition> openPositionList;
+    private desktop.PortfolioTrackerPanel portfolioTrackerPanel1;
     private desktop.PortfolioTransactionPanel tradeTransactionPanel;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
