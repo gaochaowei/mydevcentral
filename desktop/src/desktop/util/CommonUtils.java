@@ -13,6 +13,12 @@ public class CommonUtils {
 
     private static String DEFAULT_DATE_FORMAT = "yyyy/MM/dd";
 
+    public static Date today() {
+        Date today = new Date();
+        DateUtils.truncate(new Date(), Calendar.DATE);
+        return today;
+    }
+
     public static boolean isDouble(String s) {
         try {
             Double.parseDouble(s);
