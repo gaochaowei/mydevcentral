@@ -81,6 +81,7 @@ public class PortfolioTransactionPanel extends JPanel {
 
         masterScrollPane.setName("masterScrollPane"); // NOI18N
 
+        masterTable.setAutoCreateRowSorter(true);
         masterTable.setName("masterTable"); // NOI18N
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, list, masterTable);

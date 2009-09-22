@@ -16,7 +16,6 @@ import desktop.business.PortfolioTracker;
 import desktop.business.PriceHelper;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -25,13 +24,10 @@ import javax.swing.JPanel;
 import org.apache.commons.lang.time.DateUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
-import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
-import org.jfree.chart.labels.StandardXYToolTipGenerator;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -75,42 +71,71 @@ public class PortfolioTrackerPanel extends javax.swing.JPanel {
     }
 
     private XYDataset createDataset() {
-        TimeSeries timeseries = new TimeSeries("Date");
+        TimeSeries timeseries1 = new TimeSeries("Market Value");
+        TimeSeries timeseries2 = new TimeSeries("Cost");
+        TimeSeries timeseries3 = new TimeSeries("Realized Profit");
+        TimeSeries timeseries4 = new TimeSeries("Unrealized Profit");
+        TimeSeries timeseries5 = new TimeSeries("Commission");
         List<Date> dateList = tracker.getOpenPositionTrack().getDateList();
         if (dateList.size() > 0) {
             Date date = dateList.get(0);
             while (date.before(new Date())) {
                 Day day = new Day(date);
                 double value = 0;
+                double cost = 0;
                 List<StockPosition> ps = tracker.getOpenPositionList(date);
                 for (StockPosition p : ps) {
                     Price pc = PriceHelper.getPrice(p.getOpenTransaction().getStock().getSymbol(), date);
+                    cost += p.getOpenTransaction().getPrice() * p.getQuantity();
                     if (pc != null) {
                         value += pc.getPriceAdj() * p.getQuantity();
                     }
                 }
+                double up = (value - cost);
                 if (value > 0) {
-                    timeseries.add(day, value);
+                    timeseries1.add(day, value);
                 }
+                if (cost > 0) {
+                    timeseries2.add(day, cost);
+                }
+                if (value != 0 && up != 0) {
+                    timeseries4.add(day, up);
+                }
+                //get close position list
+                double rp = 0;
+                for (StockPosition p : tracker.getClosePositionList(day.getSerialDate().toDate())) {
+                    rp += p.getQuantity() * (p.getCloseTransaction().getPrice() - p.getOpenTransaction().getPrice());
+                }
+                if (rp != 0) {
+                    timeseries3.add(day, rp);
+                }
+                System.out.println(day + " " + value + " " + cost + " " + rp + " " + up);
                 date = DateUtils.addDays(date, 1);
             }
         }
-        TimeSeriesCollection timeseriescollection = new TimeSeriesCollection(timeseries);
+
+        TimeSeriesCollection timeseriescollection = new TimeSeriesCollection();
+        timeseriescollection.addSeries(timeseries1);
+        timeseriescollection.addSeries(timeseries2);
+        timeseriescollection.addSeries(timeseries3);
+        timeseriescollection.addSeries(timeseries4);
         return timeseriescollection;
     }
 
     private static JFreeChart createChart(XYDataset xydataset) {
-        JFreeChart jfreechart = ChartFactory.createXYAreaChart("XY Area Chart Demo 2", "Time", "Value", xydataset, PlotOrientation.VERTICAL, true, true, false);
+        JFreeChart jfreechart = ChartFactory.createTimeSeriesChart("Portfolio Performance", "Date", "Value($)", xydataset, true, true, false);
         XYPlot xyplot = (XYPlot) jfreechart.getPlot();
         xyplot.setDomainPannable(true);
-        DateAxis dateaxis = new DateAxis("Time");
-        dateaxis.setLowerMargin(0.0D);
-        dateaxis.setUpperMargin(0.0D);
-        xyplot.setDomainAxis(dateaxis);
-        xyplot.setForegroundAlpha(0.5F);
-        XYItemRenderer xyitemrenderer = xyplot.getRenderer();
-        xyitemrenderer.setBaseToolTipGenerator(new StandardXYToolTipGenerator("{0}: ({1}, {2})", new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("#,##0.00")));
-        ChartUtilities.applyCurrentTheme(jfreechart);
+        xyplot.setRangePannable(false);
+        xyplot.setDomainCrosshairVisible(true);
+        xyplot.setRangeCrosshairVisible(true);
+        org.jfree.chart.renderer.xy.XYItemRenderer xyitemrenderer = xyplot.getRenderer();
+        if (xyitemrenderer instanceof XYLineAndShapeRenderer) {
+            XYLineAndShapeRenderer xylineandshaperenderer = (XYLineAndShapeRenderer) xyitemrenderer;
+            xylineandshaperenderer.setBaseShapesVisible(false);
+        }
+        DateAxis dateaxis = (DateAxis) xyplot.getDomainAxis();
+        dateaxis.setDateFormatOverride(new SimpleDateFormat("dd/MM/yyyy"));
         return jfreechart;
     }
 
