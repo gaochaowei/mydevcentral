@@ -292,9 +292,10 @@ public class DesktopView extends FrameView {
         }
     }
 
-    private void showPanel(JPanel panel){
-        showPanel(panel,null);
+    private void showPanel(JPanel panel) {
+        showPanel(panel, null);
     }
+
     private void showPanel(JPanel panel, String title) {
         JInternalFrame window = new JInternalFrame();
         window.setTitle(title);
@@ -362,7 +363,7 @@ public class DesktopView extends FrameView {
             Query query = entityManager.createQuery("select s from Stock s order by s.symbol");
             List<Stock> stocks = query.getResultList();
             List<Stock> webStocks = MarketReader.fetchStockList("^STI");
-
+            webStocks.addAll(stocks);
             for (Stock s : webStocks) {
                 if (!stocks.contains(s)) {
                     s.setCreateDate(new Date());
@@ -413,7 +414,7 @@ public class DesktopView extends FrameView {
 
     @Action
     public void showTransactionTypeWindow() {
-         showPanel(new TransactionTypePanel(), "Transaction Type");
+        showPanel(new TransactionTypePanel(), "Transaction Type");
     }
 
     @Action
@@ -422,20 +423,25 @@ public class DesktopView extends FrameView {
     }
 
     private class ShowPortfolioWindowTask extends org.jdesktop.application.Task<Object, Void> {
+
         ShowPortfolioWindowTask(org.jdesktop.application.Application app) {
             // Runs on the EDT.  Copy GUI state that
             // doInBackground() depends on from parameters
             // to ShowPortfolioWindowTask fields, here.
-            super(app);            
+            super(app);
         }
-        @Override protected Object doInBackground() {
+
+        @Override
+        protected Object doInBackground() {
             // Your Task's code here.  This method runs
             // on a background thread, so don't reference
             // the Swing GUI from here.
             showWindow(new PortfolioWindow());
             return null;  // return your result
         }
-        @Override protected void succeeded(Object result) {
+
+        @Override
+        protected void succeeded(Object result) {
             // Runs on the EDT.  Update the GUI based on
             // the result computed by doInBackground().
         }
