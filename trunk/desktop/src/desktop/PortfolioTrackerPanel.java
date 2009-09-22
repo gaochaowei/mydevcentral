@@ -14,6 +14,7 @@ import desktop.bean.Price;
 import desktop.bean.StockPosition;
 import desktop.business.PortfolioTracker;
 import desktop.business.PriceHelper;
+import desktop.util.CommonUtils;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.text.SimpleDateFormat;
@@ -84,33 +85,43 @@ public class PortfolioTrackerPanel extends javax.swing.JPanel {
                 double value = 0;
                 double cost = 0;
                 List<StockPosition> ps = tracker.getOpenPositionList(date);
+                boolean marketDay = false;
                 for (StockPosition p : ps) {
                     Price pc = PriceHelper.getPrice(p.getOpenTransaction().getStock().getSymbol(), date);
                     cost += p.getOpenTransaction().getPrice() * p.getQuantity();
                     if (pc != null) {
+                        marketDay = true;
                         value += pc.getPriceAdj() * p.getQuantity();
+                    }else{
+                        marketDay = false;
+                        break;
                     }
                 }
-                double up = (value - cost);
-                if (value > 0) {
+//                System.out.println("+++ " + date + " " + dateList);
+                if (marketDay) {
                     timeseries1.add(day, value);
+                    timeseries4.add(day, value - cost);
+//                    System.out.println("\tmarket date " + date + " " + (value - cost));
                 }
-                if (cost > 0) {
+
+                if (dateList.contains(date)) {
+                    if (ps.size() == 0) {
+                        timeseries1.add(day, 0);
+                        timeseries4.add(day, 0);
+                        cost = 0;
+                    }
                     timeseries2.add(day, cost);
-                }
-                if (value != 0 && up != 0) {
-                    timeseries4.add(day, up);
-                }
-                //get close position list
-                double rp = 0;
-                for (StockPosition p : tracker.getClosePositionList(day.getSerialDate().toDate())) {
-                    rp += p.getQuantity() * (p.getCloseTransaction().getPrice() - p.getOpenTransaction().getPrice());
-                }
-                if (rp != 0) {
+                    double rp = 0;
+                    for (StockPosition p : tracker.getClosePositionList(date)) {
+                        rp += p.getQuantity() * (p.getCloseTransaction().getPrice() - p.getOpenTransaction().getPrice());
+                    }
                     timeseries3.add(day, rp);
+//                    System.out.println("\t*** " + day + " " + value + " " + cost + " " + rp + " " + (value - cost));
                 }
-                System.out.println(day + " " + value + " " + cost + " " + rp + " " + up);
+                //get close position list                
                 date = DateUtils.addDays(date, 1);
+                date = CommonUtils.sqlDate(date);
+//                date = DateUtils.truncate(date, Calendar.DATE);
             }
         }
 
