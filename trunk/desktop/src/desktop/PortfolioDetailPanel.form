@@ -244,7 +244,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Track">
+              <JTabbedPaneConstraints tabName="Performance">
                 <Property name="tabTitle" type="java.lang.String" resourceKey="portfolioTrackerPanel1.TabConstraints.tabTitle"/>
               </JTabbedPaneConstraints>
             </Constraint>
