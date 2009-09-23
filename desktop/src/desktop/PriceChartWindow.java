@@ -11,6 +11,7 @@
 package desktop;
 
 import desktop.bean.Price;
+import java.awt.Color;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.axis.NumberAxis;
@@ -42,6 +43,7 @@ public class PriceChartWindow extends javax.swing.JInternalFrame {
         ds.addSeries(data);
         org.jfree.chart.JFreeChart c = ChartFactory.createCandlestickChart("DBS Group", "Date", "Price ($)", ds, false);
         XYPlot xyplot = (XYPlot) c.getPlot();
+        xyplot.setBackgroundPaint(Color.black);
         xyplot.setDomainPannable(true);
         NumberAxis numberaxis = (NumberAxis) xyplot.getRangeAxis();
         numberaxis.setAutoRangeIncludesZero(false);
