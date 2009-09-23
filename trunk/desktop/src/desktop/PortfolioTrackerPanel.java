@@ -17,6 +17,7 @@ import desktop.business.PriceHelper;
 import desktop.util.CommonUtils;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -125,18 +126,29 @@ public class PortfolioTrackerPanel extends javax.swing.JPanel {
                 date = CommonUtils.sqlDate(date);
             }
         }
+        extendSeriesToLast(timeseries2);
+        extendSeriesToLast(timeseries3);
+        extendSeriesToLast(timeseries5);
         TimeSeriesCollection timeseriescollection = new TimeSeriesCollection();
         timeseriescollection.addSeries(timeseries1);
         timeseriescollection.addSeries(timeseries2);
         timeseriescollection.addSeries(timeseries3);
         timeseriescollection.addSeries(timeseries4);
-        timeseriescollection.addSeries(timeseries5);
+//        timeseriescollection.addSeries(timeseries5);
         return timeseriescollection;
+    }
+
+    private void extendSeriesToLast(TimeSeries timeseries) {
+        if (!timeseries.isEmpty()) {
+            Number n = timeseries.getValue(timeseries.getItemCount() - 1);
+            timeseries.add(new Day(), n);
+        }
     }
 
     private static JFreeChart createChart(XYDataset xydataset) {
         JFreeChart jfreechart = ChartFactory.createTimeSeriesChart("Portfolio Performance", "Date", "Value($)", xydataset, true, true, false);
         XYPlot xyplot = (XYPlot) jfreechart.getPlot();
+        xyplot.setBackgroundPaint(Color.black);
         xyplot.setDomainPannable(true);
         xyplot.setRangePannable(false);
         xyplot.setDomainCrosshairVisible(true);
