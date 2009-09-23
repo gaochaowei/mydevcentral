@@ -25,6 +25,7 @@ public class PortfolioTracker {
     private Map<Date, List<StockPosition>> positionHistory = new HashMap<Date, List<StockPosition>>();
     private PortfolioTracker openPortfolioTrack;
     private PortfolioTracker closePortfolioTrack;
+    private Map<Date, List<TradeTransaction>> transactionMap = new HashMap<Date, List<TradeTransaction>>();
 
     private PortfolioTracker() {
     }
@@ -71,7 +72,29 @@ public class PortfolioTracker {
         return new ArrayList<StockPosition>();
     }
 
+    public List<TradeTransaction> getTransactionList(Date date) {
+        return transactionMap.get(date);
+    }
+
+    public double getComission(Date date) {
+        List<TradeTransaction> txList = transactionMap.get(date);
+        if (txList == null || txList.isEmpty()) {
+            return 0;
+        }
+        double commission = 0;
+        for (TradeTransaction tx : txList) {
+            commission += tx.getComission();
+        }
+        return commission;
+    }
+
     private void addTradeTransaction(TradeTransaction tx) {
+        Date d = tx.getTransactionDate();
+        if (transactionMap.get(d) == null) {
+            transactionMap.put(d, new ArrayList<TradeTransaction>());
+
+        }
+        transactionMap.get(d).add(tx);
         //Add change of closing position
         int closeQuantity = 0;
         for (TradeTransactionRelation otr : tx.getOpenTradeTransactionRelationList()) {

@@ -15,6 +15,7 @@ import desktop.bean.StockPosition;
 import desktop.business.PortfolioTracker;
 import desktop.business.PriceHelper;
 import desktop.util.CommonUtils;
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.text.SimpleDateFormat;
@@ -27,8 +28,9 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.renderer.xy.XYStepRenderer;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -78,58 +80,57 @@ public class PortfolioTrackerPanel extends javax.swing.JPanel {
         TimeSeries timeseries4 = new TimeSeries("Unrealized Profit");
         TimeSeries timeseries5 = new TimeSeries("Commission");
         List<Date> dateList = tracker.getOpenPositionTrack().getDateList();
+        double commission = 0;
         if (dateList.size() > 0) {
             Date date = dateList.get(0);
-            while (date.before(new Date())) {
+            Date today = new Date();
+            while (date.before(today)) {
                 Day day = new Day(date);
-                double value = 0;
-                double cost = 0;
+                double cost = 0, value = 0, rp = 0, up = 0;
                 List<StockPosition> ps = tracker.getOpenPositionList(date);
                 boolean marketDay = false;
+                //compute portfolio cost, market value
                 for (StockPosition p : ps) {
                     Price pc = PriceHelper.getPrice(p.getOpenTransaction().getStock().getSymbol(), date);
                     cost += p.getOpenTransaction().getPrice() * p.getQuantity();
                     if (pc != null) {
                         marketDay = true;
                         value += pc.getPriceAdj() * p.getQuantity();
-                    }else{
+                    } else {
                         marketDay = false;
                         break;
                     }
                 }
-//                System.out.println("+++ " + date + " " + dateList);
-                if (marketDay) {
-                    timeseries1.add(day, value);
-                    timeseries4.add(day, value - cost);
-//                    System.out.println("\tmarket date " + date + " " + (value - cost));
-                }
-
                 if (dateList.contains(date)) {
-                    if (ps.size() == 0) {
-                        timeseries1.add(day, 0);
-                        timeseries4.add(day, 0);
+                    if (ps.isEmpty()) {
                         cost = 0;
+                        value = 0;
                     }
-                    timeseries2.add(day, cost);
-                    double rp = 0;
                     for (StockPosition p : tracker.getClosePositionList(date)) {
                         rp += p.getQuantity() * (p.getCloseTransaction().getPrice() - p.getOpenTransaction().getPrice());
                     }
+                    commission += tracker.getComission(date);
+                    marketDay = true;
+                    timeseries2.add(day, cost);
                     timeseries3.add(day, rp);
-//                    System.out.println("\t*** " + day + " " + value + " " + cost + " " + rp + " " + (value - cost));
+                    timeseries5.add(day, commission);
                 }
-                //get close position list                
+                if (marketDay) {
+                    up = value - cost;
+                    timeseries1.add(day, value);
+                    timeseries4.add(day, up);
+                }
+
                 date = DateUtils.addDays(date, 1);
                 date = CommonUtils.sqlDate(date);
-//                date = DateUtils.truncate(date, Calendar.DATE);
             }
         }
-
         TimeSeriesCollection timeseriescollection = new TimeSeriesCollection();
         timeseriescollection.addSeries(timeseries1);
         timeseriescollection.addSeries(timeseries2);
         timeseriescollection.addSeries(timeseries3);
         timeseriescollection.addSeries(timeseries4);
+        timeseriescollection.addSeries(timeseries5);
         return timeseriescollection;
     }
 
@@ -140,13 +141,17 @@ public class PortfolioTrackerPanel extends javax.swing.JPanel {
         xyplot.setRangePannable(false);
         xyplot.setDomainCrosshairVisible(true);
         xyplot.setRangeCrosshairVisible(true);
-        org.jfree.chart.renderer.xy.XYItemRenderer xyitemrenderer = xyplot.getRenderer();
-        if (xyitemrenderer instanceof XYLineAndShapeRenderer) {
-            XYLineAndShapeRenderer xylineandshaperenderer = (XYLineAndShapeRenderer) xyitemrenderer;
-            xylineandshaperenderer.setBaseShapesVisible(false);
-        }
+        XYStepRenderer xysteprenderer = new XYStepRenderer();
+        xysteprenderer.setBaseShapesVisible(true);
+        xysteprenderer.setSeriesStroke(0, new BasicStroke(1.0F));
+        xysteprenderer.setSeriesStroke(1, new BasicStroke(1.0F));
+        xysteprenderer.setSeriesStroke(2, new BasicStroke(1.0F));
+        xysteprenderer.setSeriesStroke(3, new BasicStroke(1.0F));
+        xysteprenderer.setBaseToolTipGenerator(new StandardXYToolTipGenerator());
+        xysteprenderer.setDefaultEntityRadius(6);
+        xyplot.setRenderer(xysteprenderer);
         DateAxis dateaxis = (DateAxis) xyplot.getDomainAxis();
-        dateaxis.setDateFormatOverride(new SimpleDateFormat("dd/MM/yyyy"));
+        dateaxis.setDateFormatOverride(new SimpleDateFormat("dd/MM/yy"));
         return jfreechart;
     }
 
