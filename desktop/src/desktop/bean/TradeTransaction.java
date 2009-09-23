@@ -59,6 +59,7 @@ public class TradeTransaction implements Serializable {
     @Column(name = "REMARK")
     private String remark;
     @ManyToOne
+    @JoinColumn(name = "PORTFOLIO", referencedColumnName = "ID", insertable = false, updatable = false)
     private Portfolio portfolio;
     @OneToMany(mappedBy = "closeTransaction")
     private List<TradeTransactionRelation> openTradeTransactionRelationList;
