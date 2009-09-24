@@ -80,14 +80,16 @@ public class PortfolioTrackerPanel extends javax.swing.JPanel {
         TimeSeries timeseries3 = new TimeSeries("Realized Profit");
         TimeSeries timeseries4 = new TimeSeries("Unrealized Profit");
         TimeSeries timeseries5 = new TimeSeries("Commission");
+        TimeSeries timeseries6 = new TimeSeries("Total Profit");
         List<Date> dateList = tracker.getOpenPositionTrack().getDateList();
         double commission = 0;
         if (dateList.size() > 0) {
             Date date = dateList.get(0);
             Date today = new Date();
+            double rp = 0;
             while (date.before(today)) {
                 Day day = new Day(date);
-                double cost = 0, value = 0, rp = 0, up = 0;
+                double cost = 0, value = 0, up = 0, tp = 0;
                 List<StockPosition> ps = tracker.getOpenPositionList(date);
                 boolean marketDay = false;
                 //compute portfolio cost, market value
@@ -107,6 +109,7 @@ public class PortfolioTrackerPanel extends javax.swing.JPanel {
                         cost = 0;
                         value = 0;
                     }
+                    rp = 0;
                     for (StockPosition p : tracker.getClosePositionList(date)) {
                         rp += p.getQuantity() * (p.getCloseTransaction().getPrice() - p.getOpenTransaction().getPrice());
                     }
@@ -118,8 +121,10 @@ public class PortfolioTrackerPanel extends javax.swing.JPanel {
                 }
                 if (marketDay) {
                     up = value - cost;
+                    tp = rp + up;
                     timeseries1.add(day, value);
                     timeseries4.add(day, up);
+                    timeseries6.add(day, tp);
                 }
 
                 date = DateUtils.addDays(date, 1);
@@ -135,6 +140,7 @@ public class PortfolioTrackerPanel extends javax.swing.JPanel {
         timeseriescollection.addSeries(timeseries3);
         timeseriescollection.addSeries(timeseries4);
 //        timeseriescollection.addSeries(timeseries5);
+        timeseriescollection.addSeries(timeseries6);
         return timeseriescollection;
     }
 
