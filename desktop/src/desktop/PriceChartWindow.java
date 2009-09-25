@@ -31,17 +31,14 @@ public class PriceChartWindow extends javax.swing.JInternalFrame {
     public PriceChartWindow() {
         super();
         initComponents();
-        OHLCSeries data = new OHLCSeries("DBS Group");
+        OHLCSeries data = new OHLCSeries("Strait Times Index");
         for (Price p : list) {
             RegularTimePeriod t = new Day(p.getPricePK().getPriceDate());
             data.add(t, p.getPriceOpen(), p.getPriceHigh(), p.getPriceLow(), p.getPriceClose());
-            if (data.getItemCount() > 100) {
-                break;
-            }
         }
         OHLCSeriesCollection ds = new OHLCSeriesCollection();
         ds.addSeries(data);
-        org.jfree.chart.JFreeChart c = ChartFactory.createCandlestickChart("DBS Group", "Date", "Price ($)", ds, false);
+        org.jfree.chart.JFreeChart c = ChartFactory.createCandlestickChart("Strait Times Index", "Date", "Value", ds, false);
         XYPlot xyplot = (XYPlot) c.getPlot();
         xyplot.setBackgroundPaint(Color.black);
         xyplot.setDomainPannable(true);
@@ -84,7 +81,7 @@ public class PriceChartWindow extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 278, Short.MAX_VALUE)
+            .addGap(0, 290, Short.MAX_VALUE)
         );
 
         pack();

@@ -37,7 +37,8 @@ create table account (
 create table portfolio (
     id integer not null primary key generated always as identity,
     name varchar(30),
-    remark varchar(100));
+    remark varchar(100),
+    benchmark varchar(10));
 
 create table trade_transaction (
     id integer not null primary key generated always as identity,
