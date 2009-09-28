@@ -63,7 +63,7 @@ public class MarketReader {
     public static List<Price> fetchStockPrice(String symbol,
             Date from, Date to, Frequency freq) {
         if (from == null) {
-            from = CommonUtils.parse("01/01/1000");
+            from = CommonUtils.parse("1000/01/01");
         }
         if (to == null) {
             to = new Date();
