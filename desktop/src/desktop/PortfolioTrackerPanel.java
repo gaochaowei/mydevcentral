@@ -14,7 +14,7 @@ import desktop.bean.Price;
 import desktop.bean.StockPosition;
 import desktop.business.PortfolioTracker;
 import desktop.business.PriceHelper;
-import desktop.net.MarketReader;
+import desktop.net.YahooMarketReader;
 import desktop.util.CommonUtils;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
@@ -52,7 +52,7 @@ public class PortfolioTrackerPanel extends javax.swing.JPanel {
     }
 
     public static void main(String[] args) {
-        System.out.println(MarketReader.fetchStockPrice("^STI").size());
+        System.out.println(YahooMarketReader.fetchStockPrice("^STI").size());
         EventQueue.invokeLater(new Runnable() {
 
             public void run() {

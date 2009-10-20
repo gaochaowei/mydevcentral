@@ -11,7 +11,7 @@
 package desktop;
 
 import desktop.bean.Stock;
-import desktop.net.MarketReader;
+import desktop.net.YahooMarketReader;
 import desktop.swing.DateRenderer;
 import java.util.Date;
 import java.util.List;
@@ -39,7 +39,7 @@ public class StockWindow extends javax.swing.JInternalFrame {
 
     @Action
     public void fecthFromYahoo(){
-        list.addAll(MarketReader.fetchStockList("^STI"));
+        list.addAll(YahooMarketReader.fetchStockList("^STI"));
         entityManager.getTransaction().begin();
         for(Stock s:list){
             s.setCreateDate(new java.util.Date());

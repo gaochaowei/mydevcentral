@@ -5,7 +5,9 @@ package desktop;
 
 import desktop.bean.Price;
 import desktop.bean.Stock;
-import desktop.net.MarketReader;
+import desktop.net.SGXMarketReader;
+import desktop.net.YahooMarketReader;
+import desktop.util.CommonUtils;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -14,8 +16,11 @@ import org.jdesktop.application.Task;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Query;
 import javax.swing.Timer;
 import javax.swing.Icon;
@@ -362,9 +367,11 @@ public class DesktopView extends FrameView {
             // the Swing GUI from here.
             Query query = entityManager.createQuery("select s from Stock s order by s.symbol");
             List<Stock> stocks = query.getResultList();
-            List<Stock> webStocks = MarketReader.fetchStockList("^STI");
-            webStocks.addAll(stocks);
-            for (Stock s : webStocks) {
+            List<Stock> webStocks = YahooMarketReader.fetchStockList("^STI");
+            Set<Stock> stockSet = new HashSet(stocks);
+            stockSet.addAll(webStocks);
+            int index = 1;
+            for (Stock s : stockSet) {
                 if (!stocks.contains(s)) {
                     s.setCreateDate(new Date());
                     s.setUpdateDate(new Date());
@@ -382,15 +389,44 @@ public class DesktopView extends FrameView {
                     lastDate = DateUtils.addDays((Date) o, 1);
                 }
                 entityManager.getTransaction().begin();
-                List<Price> prices = MarketReader.fetchStockPrice(s.getSymbol(), lastDate);
+                List<Price> prices = YahooMarketReader.fetchStockPrice(s.getSymbol(), lastDate);
                 for (Price p : prices) {
                     p.setCreateDate(new Date());
                     p.setUpdateDate(new Date());
                     entityManager.persist(p);
                 }
                 entityManager.getTransaction().commit();
-                setProgress(webStocks.indexOf(s) + 1, 0, webStocks.size());
+                //update from SGX website
+                setProgress(index++, 0, stockSet.size());
             }
+            Date d = new Date();
+            int n = 0;
+            while (n < 7) {
+                int day = CommonUtils.getDay(d);
+                System.out.println(n + " " + day);
+                if (day != Calendar.SATURDAY && day != Calendar.SUNDAY) {
+                    List<Price> prices = SGXMarketReader.fetchStockPriceList(d);
+                    if (prices != null && !prices.isEmpty()) {
+                        for (Price p : prices) {
+                            Stock stock = new Stock();
+                            stock.setSymbol(p.getPricePK().getStock());
+                            if (stockSet.contains(stock)) {
+                                p.setCreateDate(new Date());
+                                p.setUpdateDate(new Date());
+                                System.out.print("save " + p);
+                                entityManager.getTransaction().begin();
+                                entityManager.merge(p);
+                                entityManager.getTransaction().commit();
+                            }
+                        }
+                        n = 0;
+                    } else {
+                        n++;
+                    }
+                }
+                d = DateUtils.addDays(d, -1);
+            }
+
             return null;  // return your result
         }
 
