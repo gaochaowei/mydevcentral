@@ -39,13 +39,13 @@ public class MarketReaderTest {
     }
 
     /**
-     * Test of fetchStockList method, of class MarketReader.
+     * Test of fetchStockList method, of class YahooMarketReader.
      */
     @Test
     public void testFetchStockList() {
         System.out.println("fetchStockList");
         String indexSymbol = "^STI";
-        List result = MarketReader.fetchStockList(indexSymbol);
+        List result = YahooMarketReader.fetchStockList(indexSymbol);
         assertTrue(result!=null&&result.size()>0);
         fail("The test case is a prototype.");
     }
