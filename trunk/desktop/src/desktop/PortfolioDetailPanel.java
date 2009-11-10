@@ -124,6 +124,7 @@ public class PortfolioDetailPanel extends javax.swing.JPanel {
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${(closeTransaction.price-openTransaction.price)*quantity}"));
         columnBinding.setColumnName("(close Transaction.price-open Transaction.price)*quantity");
+        columnBinding.setColumnClass(Double.class);
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();

@@ -413,7 +413,6 @@ public class DesktopView extends FrameView {
                             if (stockSet.contains(stock)) {
                                 p.setCreateDate(new Date());
                                 p.setUpdateDate(new Date());
-                                System.out.print("save " + p);
                                 entityManager.getTransaction().begin();
                                 entityManager.merge(p);
                                 entityManager.getTransaction().commit();

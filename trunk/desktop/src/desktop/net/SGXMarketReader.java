@@ -41,7 +41,7 @@ public class SGXMarketReader {
         }
         if (items != null) {
             for (String[] ss : items) {
-                if (ss.length > 5) {
+                if (ss.length > 14) {
                     Price px = new Price();
                     PricePK pk = new PricePK(ss[14]+".SI", CommonUtils.parse(ss[0], "yyyy-MM-dd"));
                     px.setPricePK(pk);
