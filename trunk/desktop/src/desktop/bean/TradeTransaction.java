@@ -30,7 +30,7 @@ import javax.persistence.Transient;
  * @author Gao.chao.wei
  */
 @Entity
-@Table(name = "TRADE_TRANSACTION", catalog = "", schema = "ROOT")
+@Table(name = "TRXN", catalog = "", schema = "ROOT")
 @NamedQueries({@NamedQuery(name = "TradeTransaction.findAll", query = "SELECT t FROM TradeTransaction t"), @NamedQuery(name = "TradeTransaction.findById", query = "SELECT t FROM TradeTransaction t WHERE t.id = :id"), @NamedQuery(name = "TradeTransaction.findByTransactionDate", query = "SELECT t FROM TradeTransaction t WHERE t.transactionDate = :transactionDate"), @NamedQuery(name = "TradeTransaction.findByTransactionType", query = "SELECT t FROM TradeTransaction t WHERE t.transactionType = :transactionType"), @NamedQuery(name = "TradeTransaction.findByStock", query = "SELECT t FROM TradeTransaction t WHERE t.stock = :stock"), @NamedQuery(name = "TradeTransaction.findByQuantity", query = "SELECT t FROM TradeTransaction t WHERE t.quantity = :quantity"), @NamedQuery(name = "TradeTransaction.findByPrice", query = "SELECT t FROM TradeTransaction t WHERE t.price = :price"), @NamedQuery(name = "TradeTransaction.findByComission", query = "SELECT t FROM TradeTransaction t WHERE t.comission = :comission"), @NamedQuery(name = "TradeTransaction.findByRemark", query = "SELECT t FROM TradeTransaction t WHERE t.remark = :remark")})
 public class TradeTransaction implements Serializable {
 
@@ -42,13 +42,13 @@ public class TradeTransaction implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    @Column(name = "TRANSACTION_DATE")
+    @Column(name = "TRXN_DATE")
     @Temporal(TemporalType.DATE)
     private Date transactionDate;
-    @Column(name = "TRANSACTION_TYPE")
+    @Column(name = "TRXN_TYPE_ID")
     private Integer transactionType;
     @ManyToOne
-    @JoinColumn(name = "STOCK", referencedColumnName = "SYMBOL")
+    @JoinColumn(name = "STOCK_SYMBOL", referencedColumnName = "SYMBOL")
     private Stock stock;
     @Column(name = "QUANTITY")
     private Integer quantity;
@@ -59,7 +59,7 @@ public class TradeTransaction implements Serializable {
     @Column(name = "REMARK")
     private String remark;
     @ManyToOne
-    @JoinColumn(name = "PORTFOLIO", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "PORTFOLIO_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private Portfolio portfolio;
     @OneToMany(mappedBy = "closeTransaction")
     private List<TradeTransactionRelation> openTradeTransactionRelationList;

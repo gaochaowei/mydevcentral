@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
 @Embeddable
 public class PricePK implements Serializable {
     @Basic(optional = false)
-    @Column(name = "STOCK")
+    @Column(name = "STOCK_SYMBOL")
     private String stock;
     @Basic(optional = false)
     @Column(name = "PRICE_DATE")

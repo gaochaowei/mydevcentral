@@ -199,7 +199,7 @@ public class TransactionTypePanel extends JPanel {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         desktop.bean.TransactionType o = new desktop.bean.TransactionType();
-        o.setText("");
+        o.setName("");
         entityManager.persist(o);
         list.add(o);
         int row = list.size()-1;

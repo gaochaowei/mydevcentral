@@ -22,7 +22,7 @@ import javax.persistence.Transient;
  * @author Gao.chao.wei
  */
 @Entity
-@Table(name = "TRADE_TRANSACTION_RELATION", catalog = "", schema = "ROOT")
+@Table(name = "TRXN_REL", catalog = "", schema = "ROOT")
 @NamedQueries({@NamedQuery(name = "TradeTransactionRelation.findAll", query = "SELECT t FROM TradeTransactionRelation t"), @NamedQuery(name = "TradeTransactionRelation.findByOpenTransaction", query = "SELECT t FROM TradeTransactionRelation t WHERE t.tradeTransactionRelationPK.openTransaction = :openTransaction"), @NamedQuery(name = "TradeTransactionRelation.findByCloseTransaction", query = "SELECT t FROM TradeTransactionRelation t WHERE t.tradeTransactionRelationPK.closeTransaction = :closeTransaction"), @NamedQuery(name = "TradeTransactionRelation.findByQuantity", query = "SELECT t FROM TradeTransactionRelation t WHERE t.quantity = :quantity")})
 public class TradeTransactionRelation implements Serializable {
 
@@ -33,10 +33,10 @@ public class TradeTransactionRelation implements Serializable {
     protected TradeTransactionRelationPK tradeTransactionRelationPK;
     @Column(name = "QUANTITY")
     private Integer quantity;
-    @JoinColumn(name = "OPEN_TRANSACTION", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "OPEN_TRXN_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private TradeTransaction openTransaction;
-    @JoinColumn(name = "CLOSE_TRANSACTION", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "CLOSE_TRXN_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private TradeTransaction closeTransaction;
 

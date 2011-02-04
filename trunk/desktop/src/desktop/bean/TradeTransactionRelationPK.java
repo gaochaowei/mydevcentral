@@ -17,10 +17,10 @@ import javax.persistence.Embeddable;
 public class TradeTransactionRelationPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "OPEN_TRANSACTION")
+    @Column(name = "OPEN_TRXN_ID")
     private int openTransaction;
     @Basic(optional = false)
-    @Column(name = "CLOSE_TRANSACTION")
+    @Column(name = "CLOSE_TRXN_ID")
     private int closeTransaction;
 
     public TradeTransactionRelationPK() {
