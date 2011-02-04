@@ -48,7 +48,7 @@ public class Price implements Serializable {
     @Column(name = "UPDATE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate;
-    @JoinColumn(name = "STOCK", referencedColumnName = "SYMBOL", insertable = false, updatable = false)
+    @JoinColumn(name = "STOCK_SYMBOL", referencedColumnName = "SYMBOL", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Stock stock;
 

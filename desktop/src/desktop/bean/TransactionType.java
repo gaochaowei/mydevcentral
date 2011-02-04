@@ -24,8 +24,8 @@ import javax.persistence.Transient;
  * @author Gao.chao.wei
  */
 @Entity
-@Table(name = "TRANSACTION_TYPE", catalog = "", schema = "ROOT")
-@NamedQueries({@NamedQuery(name = "TransactionType.findAll", query = "SELECT t FROM TransactionType t"), @NamedQuery(name = "TransactionType.findById", query = "SELECT t FROM TransactionType t WHERE t.id = :id"), @NamedQuery(name = "TransactionType.findByText", query = "SELECT t FROM TransactionType t WHERE t.text = :text")})
+@Table(name = "TRXN_TYPE", catalog = "", schema = "ROOT")
+@NamedQueries({@NamedQuery(name = "TransactionType.findAll", query = "SELECT t FROM TransactionType t"), @NamedQuery(name = "TransactionType.findById", query = "SELECT t FROM TransactionType t WHERE t.id = :id"), @NamedQuery(name = "TransactionType.findByName", query = "SELECT t FROM TransactionType t WHERE t.name = :name")})
 public class TransactionType implements Serializable {
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
@@ -35,8 +35,8 @@ public class TransactionType implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    @Column(name = "TEXT")
-    private String text;
+    @Column(name = "NAME")
+    private String name;
 
     public TransactionType() {
     }
@@ -45,9 +45,9 @@ public class TransactionType implements Serializable {
         this.id = id;
     }
 
-    public TransactionType(Integer id, String text) {
+    public TransactionType(Integer id, String name) {
         this.id = id;
-        this.text = text;
+        this.name = name;
     }
 
     public Integer getId() {
@@ -60,14 +60,14 @@ public class TransactionType implements Serializable {
         changeSupport.firePropertyChange("id", oldId, id);
     }
 
-    public String getText() {
-        return text;
+    public String getName() {
+        return name;
     }
 
-    public void setText(String text) {
-        String oldText = this.text;
-        this.text = text;
-        changeSupport.firePropertyChange("text", oldText, text);
+    public void setName(String name) {
+        String oldName = this.name;
+        this.name = name;
+        changeSupport.firePropertyChange("name", oldName, name);
     }
 
     @Override

@@ -1,19 +1,19 @@
-drop table trade_transaction_close;
-drop table trade_transaction;
-drop table account;
-drop table transaction_type;
-drop table price;
-drop table portfolio;
-drop table stock;
+drop table root.account;
+drop table root.stock;
+drop table root.price;
+drop table root.portfolio;
+drop table root.trxn_type;
+drop table root.trxn;
+drop table root.trxn_rel;
 
-create table stock (
+create table root.stock (
     symbol varchar(10) not null primary key,
     name varchar(30),
     create_date date not null default current_date,
     update_date date not null default current_date);
 
-create table price (
-    stock varchar(10) not null references stock(symbol),
+create table root.price (
+    stock_symbol varchar(10) not null,
     price_date date not null,
     price_open double,
     price_high double,
@@ -24,35 +24,35 @@ create table price (
     update_date date not null default current_date,
     primary key (stock,price_date));
 
-create table transaction_type (
-    id integer not null primary key generated always as identity,
-    text varchar(30)
+create table root.trxn_type (
+    id integer not null primary key,
+    name varchar(30)
 );
 
-create table account (
-    id integer not null primary key generated always as identity,
+create table root.account (
+    id integer not null primary key,
     name varchar(30),
     balance double default 0);
 
-create table portfolio (
-    id integer not null primary key generated always as identity,
+create table root.portfolio (
+    id integer not null primary key,
     name varchar(30),
     remark varchar(100),
     benchmark varchar(10));
 
-create table trade_transaction (
-    id integer not null primary key generated always as identity,
-    portfolio integer references portfolio(id),
-    transaction_date date,
-    transaction_type integer references transaction_type(id),
-    stock varchar(10) references stock(symbol),
+create table root.trxn (
+    id integer not null primary key,
+    portfolio_id integer,
+    trxn_date date,
+    trxn_type_id integer,
+    stock_symbol varchar(10),
     quantity integer,
     price double,
     comission double,
     remark varchar(100));
 
-create table trade_transaction_relation (
-    open_transaction integer references trade_transaction(id),
-    close_transaction integer references trade_transaction(id),
+create table root.trxn_rel (
+    open_trxn_id integer,
+    close_trxn_id integer,
     quantity integer,
-    primary key(open_transaction,close_transaction));
+    primary key(open_trxn_id,close_trxn_id));
